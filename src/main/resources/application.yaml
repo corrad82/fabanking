@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:fabanking
+    username: fabanking
+    password: f4b4nk1ng
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console.enabled: true
+  main:
+    allow-circular-references: true
