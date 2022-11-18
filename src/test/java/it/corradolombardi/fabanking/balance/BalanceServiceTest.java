@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import it.corradolombardi.fabanking.balance.BalanceService.BalanceUnavailableException;
+import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.Amount;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class BalanceServiceTest {
     }
 
     @Test
-    public void positiveBalance() {
+    public void positiveBalance() throws BalanceUnavailableException, AccountNotFoundException {
 
         LocalDate date = LocalDate.now();
         Amount availableBalance = new Amount(abs(random.nextLong()), EUR);
@@ -58,7 +59,7 @@ public class BalanceServiceTest {
     }
 
     @Test
-    public void negativeBalance() {
+    public void negativeBalance() throws BalanceUnavailableException, AccountNotFoundException {
         LocalDate date = LocalDate.now();
         Amount availableBalance = new Amount(negate(random.nextLong()), EUR);
         Amount balance = new Amount(negate(random.nextLong()), EUR);
@@ -72,12 +73,26 @@ public class BalanceServiceTest {
         assertThat(result.getBalance().getCents(), lessThan(0L));
     }
 
-    @Test(expected = BalanceUnavailableException.class)
-    public void noBalanceReturnedThrowsException() {
+    @Test
+    public void noBalanceReturnedThrowsException() throws AccountNotFoundException {
 
         when(balanceRepository.balance(accountId)).thenReturn(Optional.empty());
 
-        balanceService.balance(accountId);
+        try {
+            balanceService.balance(accountId);
+        } catch (BalanceUnavailableException e) {
+            assertThat(e.getMessage(), is("Unable to find Balance"));
+        }
+    }
+
+    @Test
+    public void accountNotFound() throws BalanceUnavailableException {
+
+        try {
+            balanceService.balance(-10L);
+        } catch (AccountNotFoundException e) {
+            assertThat(e.getMessage(), is("Account with id -10 has not been found"));
+        }
     }
 
     private long negate(long l) {
