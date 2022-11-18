@@ -8,6 +8,7 @@ import it.corradolombardi.fabanking.balance.Balance;
 import it.corradolombardi.fabanking.balance.BalanceService;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.Amount;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,22 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class BalanceController {
 
-    private final BalanceService balanceService = new BalanceService(
-        accountId -> Optional.of(
-            new Balance(LocalDate.now(),
-                        new Amount(10000L, Currency.getInstance("EUR")),
-                        new Amount(12000L, Currency.getInstance("EUR"))
-            )
-        )
-    );
+    private final BalanceService balanceService;
 
     @GetMapping("/balance/{accountId}")
-    public ResponseEntity<Balance> balance(@PathVariable("accountId") Long accountId) {
+    public ResponseEntity<BalanceRest> balance(@PathVariable("accountId") Long accountId) {
 
         try {
-            return ResponseEntity.ok(balanceService.balance(accountId));
+            return ResponseEntity.ok(balanceService.balance(accountId).toRest());
         } catch (AccountNotFoundException e) {
             log.warn(e.getMessage());
             return ResponseEntity.notFound().build();
