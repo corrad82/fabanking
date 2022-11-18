@@ -8,3 +8,4 @@
 * [] database for transactions
 
 * [] queue or pub/sub (optional)
+* [] swagger (optional )
