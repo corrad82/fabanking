@@ -12,17 +12,20 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class FabrikClient {
 
+    private static final String BALANCE_RESOURCE = "/balance";
     private final RestTemplate restTemplate;
 
+    private final String baseUrl;
 
-    public FabrikClient(RestTemplate restTemplate) {
+
+    public FabrikClient(String baseUrl, RestTemplate restTemplate) {
+        this.baseUrl = baseUrl;
         this.restTemplate = restTemplate;
     }
 
-    public BalancecFabrikResponse balance(String accountId) throws FabrikApiException {
+    public BalancecFabrikResponse balance(Long accountId) throws FabrikApiException {
         try {
-            return restTemplate.getForObject("https://sandbox.platfr.io/" +
-                            "api/gbs/banking/v4.0/accounts/" + accountId + "/balance",
+            return restTemplate.getForObject(baseUrl + "/" + accountId + BALANCE_RESOURCE,
                     BalancecFabrikResponse.class);
         } catch (RestClientException e) {
             log.error(e.getMessage(), e);

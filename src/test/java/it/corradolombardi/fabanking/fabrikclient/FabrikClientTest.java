@@ -20,7 +20,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class FabrikClientTest {
+class FabrikClientTest {
 
     @Mock
     private RestTemplate restTemplate;
@@ -28,7 +28,7 @@ public class FabrikClientTest {
 
     @BeforeEach
     void setUp() {
-        fabrikClient = new FabrikClient(restTemplate);
+        fabrikClient = new FabrikClient("https://www.example.com/accounts", restTemplate);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class FabrikClientTest {
                 "    }" +
                 "}");
 
-        BalancecFabrikResponse response = fabrikClient.balance("123");
+        BalancecFabrikResponse response = fabrikClient.balance(123L);
 
         assertThat(response,
                 is(
@@ -75,7 +75,7 @@ public class FabrikClientTest {
                         "    \"payload\": {}" +
                         "}");
 
-        BalancecFabrikResponse response = fabrikClient.balance("789");
+        BalancecFabrikResponse response = fabrikClient.balance(789L);
 
         assertThat(response,
                 is(
@@ -94,7 +94,7 @@ public class FabrikClientTest {
         doThrow(new RestClientException("An error occurred"))
                 . when(restTemplate)
                 .getForObject(anyString(), any());
-        assertThrows(FabrikApiException.class, () -> fabrikClient.balance("4343"));
+        assertThrows(FabrikApiException.class, () -> fabrikClient.balance(4343L));
 
     }
 

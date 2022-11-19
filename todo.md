@@ -1,8 +1,9 @@
 * [x] run all tests during build 
 
 * [] balance (api)
+* [] handler per eccezioni
 * [] transactions (api)
-* [] transfer (api)
+* [] transfer (api ad hoc con client differente)
 
 
 * [] cache for balance
@@ -13,5 +14,5 @@
 * [] queue or pub/sub (optional)
 * [] swagger (optional )
 
+* [] review assertions nei test 
 * [] code cleanup
-* [] README

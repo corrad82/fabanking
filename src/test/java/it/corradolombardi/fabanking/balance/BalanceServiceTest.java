@@ -21,9 +21,8 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 
-//@RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
-public class BalanceServiceTest {
+class BalanceServiceTest {
 
     public static final Currency EUR = Currency.getInstance("EUR");
     private BalanceService balanceService;
