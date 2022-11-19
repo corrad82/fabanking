@@ -3,6 +3,7 @@ package it.corradolombardi.fabanking.rest;
 import it.corradolombardi.fabanking.balance.Balance;
 import it.corradolombardi.fabanking.balance.BalanceService;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
+import it.corradolombardi.fabanking.model.BalanceRest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

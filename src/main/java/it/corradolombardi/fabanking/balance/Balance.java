@@ -1,7 +1,7 @@
 package it.corradolombardi.fabanking.balance;
 
 import it.corradolombardi.fabanking.model.Amount;
-import it.corradolombardi.fabanking.rest.BalanceRest;
+import it.corradolombardi.fabanking.model.BalanceRest;
 import lombok.Data;
 
 import java.time.LocalDate;

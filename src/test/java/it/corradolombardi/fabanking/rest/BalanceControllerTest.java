@@ -40,6 +40,16 @@ public class BalanceControllerTest {
     }
 
     @Test
+    public void negativeBalanceReturned() throws Exception {
+
+        mockMvc.perform(get("/balance/999"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+                .andExpect(jsonPath("$.availableBalance.amount", is("-100.00")))
+                .andExpect(jsonPath("$.balance.amount", is("-200.00")));
+    }
+
+    @Test
     public void balanceNotReturnedByExternalService() throws Exception {
         mockMvc.perform(get("/balance/111"))
                .andExpect(status().isInternalServerError());
@@ -84,7 +94,8 @@ public class BalanceControllerTest {
     @TestConfiguration
     static class BalanceControllerTestConfiguration {
 
-        // for test purposes, results are returned iif account id is 333
+        // for test purposes, results are returned with positive balance if account id is 333
+        // and with negative balance if account id is 999
         @Bean
         public BalanceService balanceService() {
             return new BalanceService(
@@ -96,6 +107,15 @@ public class BalanceControllerTest {
                                 new Amount(10000L, Currency.getInstance("EUR")),
                                 new Amount(20000L, Currency.getInstance("EUR"))
                             )
+                        );
+                    }
+                    if (accountId == 999L) {
+                        return Optional.of(
+                                new Balance(
+                                        now(),
+                                        new Amount(-10000L, Currency.getInstance("EUR")),
+                                        new Amount(-20000L, Currency.getInstance("EUR"))
+                                )
                         );
                     }
                     return Optional.empty();

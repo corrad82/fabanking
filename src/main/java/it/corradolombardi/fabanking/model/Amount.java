@@ -1,6 +1,5 @@
 package it.corradolombardi.fabanking.model;
 
-import it.corradolombardi.fabanking.rest.AmountRest;
 import lombok.Data;
 
 import java.util.Currency;

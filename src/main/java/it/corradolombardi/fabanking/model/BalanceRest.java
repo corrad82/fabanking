@@ -1,4 +1,4 @@
-package it.corradolombardi.fabanking.rest;
+package it.corradolombardi.fabanking.model;
 
 import lombok.Data;
 
