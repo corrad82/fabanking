@@ -1,6 +1,5 @@
 package it.corradolombardi.fabanking.fabrikclient;
 
-import it.corradolombardi.fabanking.balance.BalanceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;

@@ -12,3 +12,6 @@
 * [] github automatic build and readme
 * [] queue or pub/sub (optional)
 * [] swagger (optional )
+
+* [] code cleanup
+* [] README

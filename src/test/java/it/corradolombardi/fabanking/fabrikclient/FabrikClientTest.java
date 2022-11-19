@@ -1,8 +1,6 @@
 package it.corradolombardi.fabanking.fabrikclient;
 
 
-import it.corradolombardi.fabanking.balance.BalanceService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +32,7 @@ public class FabrikClientTest {
     }
 
     @Test
-    void balanceFound() throws BalanceService.BalanceUnavailableException, FabrikApiException {
+    void balanceFound() throws FabrikApiException {
 
         expectApiResponse("accounts/123/balance",
                 "{" +
@@ -63,7 +61,7 @@ public class FabrikClientTest {
     }
 
     @Test
-    void responseError() throws BalanceService.BalanceUnavailableException, FabrikApiException {
+    void responseError() throws FabrikApiException {
         expectApiResponse("accounts/789/balance",
                 "{" +
                         "    \"status\": \"KO\"," +
@@ -107,12 +105,6 @@ public class FabrikClientTest {
                         eq(BalancecFabrikResponse.class)))
                 .thenReturn(BalancecFabrikResponse.fromJson(jsonResponse));
     }
-
-
-
-    // timeout
-
-    // remote server error
 
 
 }
