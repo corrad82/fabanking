@@ -1,20 +1,22 @@
 package it.corradolombardi.fabanking.fabrikclient;
 
 
+import it.corradolombardi.fabanking.balance.BalanceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,7 +32,7 @@ public class FabrikClientTest {
     }
 
     @Test
-    void balanceFound() {
+    void balanceFound() throws BalanceService.BalanceUnavailableException {
 
         expectApiResponse("accounts/123/balance",
                 "{" +
@@ -59,7 +61,7 @@ public class FabrikClientTest {
     }
 
     @Test
-    void responseError() {
+    void responseError() throws BalanceService.BalanceUnavailableException {
         expectApiResponse("accounts/789/balance",
                 "{" +
                         "    \"status\": \"KO\"," +
@@ -88,9 +90,16 @@ public class FabrikClientTest {
     }
 
     @Test
-    void timeout() {
-        when(restTemplate.getForObject(any(), eq(BalancecFabrikResponse.class)))
-                .then
+    void exceptionDuringApiInteraction() {
+        doThrow(new RestClientException("An error occurred"))
+                . when(restTemplate)
+                .getForObject(anyString(), eq(BalancecFabrikResponse.class));
+        try {
+            BalancecFabrikResponse balance = fabrikClient.balance("456");
+        } catch (BalanceService.BalanceUnavailableException e) {
+            assertThat(e.getMessage(), is("foo"));
+        }
+
     }
 
     private void expectApiResponse(String request, String jsonResponse) {
