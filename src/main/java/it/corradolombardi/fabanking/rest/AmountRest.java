@@ -1,8 +1,8 @@
 package it.corradolombardi.fabanking.rest;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
-@RequiredArgsConstructor
+@Data
 public class AmountRest {
 
     private final String amount;

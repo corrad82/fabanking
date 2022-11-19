@@ -1,5 +1,19 @@
 package it.corradolombardi.fabanking.balance;
 
+import it.corradolombardi.fabanking.balance.BalanceService.BalanceUnavailableException;
+import it.corradolombardi.fabanking.model.AccountNotFoundException;
+import it.corradolombardi.fabanking.model.Amount;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
+import java.util.Currency;
+import java.util.Optional;
+import java.util.Random;
+
 import static java.lang.Math.abs;
 import static java.lang.Math.negateExact;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -7,21 +21,8 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
-import java.util.Currency;
-import java.util.Optional;
-import java.util.Random;
-
-import it.corradolombardi.fabanking.balance.BalanceService.BalanceUnavailableException;
-import it.corradolombardi.fabanking.model.AccountNotFoundException;
-import it.corradolombardi.fabanking.model.Amount;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class BalanceServiceTest {
 
     public static final Currency EUR = Currency.getInstance("EUR");
@@ -33,7 +34,7 @@ public class BalanceServiceTest {
 
     private Long accountId;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         balanceService = new BalanceService(balanceRepository);
         accountId = abs(random.nextLong());
@@ -81,7 +82,7 @@ public class BalanceServiceTest {
         try {
             balanceService.balance(accountId);
         } catch (BalanceUnavailableException e) {
-            assertThat(e.getMessage(), is("Unable to find Balance"));
+            assertThat(e.getMessage(), is("Unable to find balance"));
         }
     }
 

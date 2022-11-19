@@ -1,11 +1,12 @@
 package it.corradolombardi.fabanking.model;
 
-import static java.lang.String.format;
+import it.corradolombardi.fabanking.rest.AmountRest;
+import lombok.Data;
 
 import java.util.Currency;
 
-import it.corradolombardi.fabanking.rest.AmountRest;
-import lombok.Data;
+import static java.lang.String.format;
+import static java.util.Locale.US;
 
 @Data
 public class Amount {
@@ -14,6 +15,7 @@ public class Amount {
 
     public AmountRest toRest() {
         Double d = (double) (cents / 100);
-        return new AmountRest(format("%.2f", d), currency.getCurrencyCode());
+        String amount = format(US, "%.2f", d);
+        return new AmountRest(amount, currency.getCurrencyCode());
     }
 }

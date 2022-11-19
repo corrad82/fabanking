@@ -1,3 +1,5 @@
+* [x] run all tests during build 
+
 * [] balance
 * [] transactions
 * [] transfer

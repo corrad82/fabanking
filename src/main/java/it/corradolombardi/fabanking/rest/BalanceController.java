@@ -1,13 +1,8 @@
 package it.corradolombardi.fabanking.rest;
 
-import java.time.LocalDate;
-import java.util.Currency;
-import java.util.Optional;
-
 import it.corradolombardi.fabanking.balance.Balance;
 import it.corradolombardi.fabanking.balance.BalanceService;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
-import it.corradolombardi.fabanking.model.Amount;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +21,9 @@ public class BalanceController {
     public ResponseEntity<BalanceRest> balance(@PathVariable("accountId") Long accountId) {
 
         try {
-            return ResponseEntity.ok(balanceService.balance(accountId).toRest());
+            Balance balance = balanceService.balance(accountId);
+            BalanceRest body = balance.toRest();
+            return ResponseEntity.ok(body);
         } catch (AccountNotFoundException e) {
             log.warn(e.getMessage());
             return ResponseEntity.notFound().build();
