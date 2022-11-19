@@ -20,7 +20,7 @@ public class FabrikClient {
         this.restTemplate = restTemplate;
     }
 
-    public BalancecFabrikResponse balance(String accountId) {
+    public BalancecFabrikResponse balance(String accountId) throws FabrikApiException {
         try {
             return restTemplate.getForObject("https://sandbox.platfr.io/" +
                             "api/gbs/banking/v4.0/accounts/" + accountId + "/balance",
