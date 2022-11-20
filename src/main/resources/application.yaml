@@ -12,7 +12,8 @@ spring:
     allow-circular-references: true
 
 fabrik:
-  banking-account-cash:
-    baseUrl: "https://sandbox.platfr.io/api/gbs/banking/v4.0/accounts"
-    authSchema: "S2S"
-    apiKey: "FXOVVXXHVCPVPBZXIJOBGUGSKHDNFRRQJP"
+  client:
+    banking-account-cash:
+      baseUrl: "https://sandbox.platfr.io/api/gbs/banking/v4.0/accounts"
+      authSchema: "S2S"
+      apiKey: "FXOVVXXHVCPVPBZXIJOBGUGSKHDNFRRQJP"
