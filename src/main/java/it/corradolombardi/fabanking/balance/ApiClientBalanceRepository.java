@@ -2,7 +2,9 @@ package it.corradolombardi.fabanking.balance;
 
 import it.corradolombardi.fabanking.fabrikclient.BalancecFabrikResponse;
 import it.corradolombardi.fabanking.fabrikclient.FabrikApiException;
+import it.corradolombardi.fabanking.fabrikclient.FabrikApiStatusCodeException;
 import it.corradolombardi.fabanking.fabrikclient.FabrikClient;
+import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
@@ -17,7 +19,7 @@ public class ApiClientBalanceRepository implements BalanceRepository {
     }
 
     @Override
-    public Optional<Balance> balance(Long accountId) {
+    public Optional<Balance> balance(Long accountId) throws AccountNotFoundException, BalanceService.BalanceUnavailableException {
         try {
             BalancecFabrikResponse response = fabrikClient.balance(accountId);
             if (response.isOk()) {
@@ -25,9 +27,13 @@ public class ApiClientBalanceRepository implements BalanceRepository {
             }
             log.warn("Api client returned errors: {}", response.getErrors());
 
+        } catch (FabrikApiStatusCodeException e) {
+          if (e.userUnknown()) {
+              throw new AccountNotFoundException(accountId);
+          }
         } catch (FabrikApiException e) {
             log.error(e.getMessage(), e);
         }
-        return Optional.empty();
+        throw new BalanceService.BalanceUnavailableException();
     }
 }

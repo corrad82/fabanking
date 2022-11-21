@@ -1,6 +1,7 @@
 package it.corradolombardi.fabanking.fabrikclient;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,7 +28,12 @@ public class FabrikClient {
         try {
             return restTemplate.getForObject(baseUrl + "/" + accountId + BALANCE_RESOURCE,
                     BalancecFabrikResponse.class);
-        } catch (RestClientException e) {
+        } catch (HttpStatusCodeException e) {
+            log.error("Error from fabrik API {} - {}", e.getStatusCode(),
+                    e.getMessage());
+            throw new FabrikApiStatusCodeException(e);
+        }
+        catch (RestClientException e) {
             log.error(e.getMessage(), e);
             throw new FabrikApiException(e);
         }

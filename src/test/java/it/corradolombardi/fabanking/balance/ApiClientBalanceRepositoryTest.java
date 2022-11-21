@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.client.RestClientException;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -74,7 +75,7 @@ class ApiClientBalanceRepositoryTest {
     void exceptionThrownByClient() throws FabrikApiException {
         long accountId = 999L;
 
-        doThrow(new FabrikApiException(new Exception("something went wrong")))
+        doThrow(new FabrikApiException(new RestClientException("something went wrong")))
                 .when(fabrikClient)
                 .balance(accountId);
 
