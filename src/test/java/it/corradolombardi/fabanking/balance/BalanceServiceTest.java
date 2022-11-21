@@ -1,6 +1,5 @@
 package it.corradolombardi.fabanking.balance;
 
-import it.corradolombardi.fabanking.balance.BalanceService.BalanceUnavailableException;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.Amount;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,7 +73,7 @@ class BalanceServiceTest {
     }
 
     @Test
-    public void noBalanceReturnedThrowsException() throws AccountNotFoundException {
+    public void noBalanceReturnedThrowsException() throws AccountNotFoundException, BalanceUnavailableException {
 
         when(balanceRepository.balance(accountId)).thenReturn(Optional.empty());
 

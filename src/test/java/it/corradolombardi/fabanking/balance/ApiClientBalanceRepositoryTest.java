@@ -1,12 +1,16 @@
 package it.corradolombardi.fabanking.balance;
 
 import it.corradolombardi.fabanking.fabrikclient.*;
+import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.Amount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 
 import java.time.LocalDate;
@@ -14,7 +18,9 @@ import java.util.Arrays;
 import java.util.Currency;
 import java.util.Optional;
 
+import static java.nio.charset.Charset.defaultCharset;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +39,7 @@ class ApiClientBalanceRepositoryTest {
     }
 
     @Test
-    void valueReturnedByClient() throws FabrikApiException {
+    void valueReturnedByClient() throws Exception {
         long accountId = 1234567L;
 
         when(fabrikClient.balance(accountId))
@@ -53,7 +59,7 @@ class ApiClientBalanceRepositoryTest {
     }
 
     @Test
-    void errorReturnedByClient() throws FabrikApiException {
+    void errorReturnedByClient() throws Exception {
         long accountId = 999L;
 
         when(fabrikClient.balance(accountId))
@@ -65,23 +71,77 @@ class ApiClientBalanceRepositoryTest {
                                 null)
                 );
 
-        Optional<Balance> balance = apiClientBalanceRepository.balance(accountId);
-
-
-        assertEquals(Optional.empty(), balance);
+        assertThrows(BalanceUnavailableException.class,
+                     () -> apiClientBalanceRepository.balance(accountId));
     }
 
     @Test
-    void exceptionThrownByClient() throws FabrikApiException {
+    void exceptionThrownByClient() throws Exception {
         long accountId = 999L;
 
         doThrow(new FabrikApiException(new RestClientException("something went wrong")))
                 .when(fabrikClient)
                 .balance(accountId);
 
-        Optional<Balance> balance = apiClientBalanceRepository.balance(accountId);
+        assertThrows(BalanceUnavailableException.class,
+                     () -> apiClientBalanceRepository.balance(accountId));
+    }
+
+    @Test
+    void invalidAccountThrowsAccountNotFound() throws Exception{
+
+        String payload = "{" +
+            "    \"status\": \"KO\"," +
+            "    \"errors\": [" +
+            "        {" +
+            "            \"code\": \"REQ004\"," +
+            "            \"description\": \"Invalid account identifier\"," +
+            "            \"params\": \"\"" +
+            "        }" +
+            "    ]," +
+            "    \"payload\": {}" +
+            "}";
+
+        long accountId = 45235L;
+
+        expectPayload(accountId, payload);
+
+        assertThrows(AccountNotFoundException.class,
+                     () -> apiClientBalanceRepository.balance(accountId));
+    }
+
+    @Test
+    void otherForbiddenErrorMessageThrowsBalanceNotFound() throws Exception {
+        String payload = "{" +
+            "    \"status\": \"KO\"," +
+            "    \"errors\": [" +
+            "        {" +
+            "            \"code\": \"REQ003\"," +
+            "            \"description\": \"Missing request header: Auth-Schema\"," +
+            "            \"params\": \"\"" +
+            "        }" +
+            "    ]," +
+            "    \"payload\": {}" +
+            "}";
+
+        long accountId = 45235L;
+
+        expectPayload(accountId, payload);
+
+        assertThrows(AccountNotFoundException.class,
+                     () -> apiClientBalanceRepository.balance(accountId));
+    }
+
+    private void expectPayload(long accountId, String payload) throws FabrikApiException {
+        HttpStatusCodeException e = new HttpClientErrorException(
+            HttpStatus.FORBIDDEN,
+            "Forbidden",
+            payload.getBytes(defaultCharset()),
+            defaultCharset());
 
 
-        assertEquals(Optional.empty(), balance);
+        doThrow(new FabrikApiStatusCodeException(e))
+            .when(fabrikClient)
+            .balance(accountId);
     }
 }

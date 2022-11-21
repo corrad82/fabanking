@@ -19,9 +19,4 @@ public class BalanceService {
             .orElseThrow(BalanceUnavailableException::new);
     }
 
-    public static class BalanceUnavailableException extends Exception {
-        public BalanceUnavailableException() {
-            super("Unable to find balance");
-        }
-    }
 }

@@ -2,6 +2,7 @@ package it.corradolombardi.fabanking.rest;
 
 import it.corradolombardi.fabanking.balance.Balance;
 import it.corradolombardi.fabanking.balance.BalanceService;
+import it.corradolombardi.fabanking.balance.BalanceUnavailableException;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.BalanceRest;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class BalanceController {
         } catch (AccountNotFoundException e) {
             log.warn(e.getMessage());
             return ResponseEntity.notFound().build();
-        } catch (BalanceService.BalanceUnavailableException e) {
+        } catch (BalanceUnavailableException e) {
             log.error(e.getMessage(), e);
             return ResponseEntity.internalServerError().build();
         }
