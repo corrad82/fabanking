@@ -13,4 +13,10 @@ public abstract class BaseFabrikResponse<T> {
     public boolean isOk() {
         return "OK".equals(status);
     }
+
+    public boolean isInvalidAccount() {
+        return errors.stream()
+            .anyMatch(FabrikError::isInvalidAccount);
+    }
+
 }

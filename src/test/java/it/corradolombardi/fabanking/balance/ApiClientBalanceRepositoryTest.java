@@ -128,7 +128,7 @@ class ApiClientBalanceRepositoryTest {
 
         expectPayload(accountId, payload);
 
-        assertThrows(AccountNotFoundException.class,
+        assertThrows(BalanceUnavailableException.class,
                      () -> apiClientBalanceRepository.balance(accountId));
     }
 

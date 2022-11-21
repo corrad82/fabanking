@@ -15,8 +15,8 @@ public class FabrikClientConfiguration {
         RestTemplate restTemplate = restTemplateBuilder.build();
         restTemplate.getInterceptors()
                 .add((request, body, execution) -> {
-                    request.getHeaders()
-                            .add("Auth-Schema", properties.getAuthSchema());
+//                    request.getHeaders()
+//                            .add("Auth-Schema", properties.getAuthSchema());
                     request.getHeaders()
                             .add("Api-Key", properties.getApiKey());
 

@@ -20,19 +20,13 @@ public class BalanceController {
     private final BalanceService balanceService;
 
     @GetMapping("/balance/{accountId}")
-    public ResponseEntity<BalanceRest> balance(@PathVariable("accountId") Long accountId) {
+    public ResponseEntity<BalanceRest> balance(@PathVariable("accountId") Long accountId)
+        throws BalanceUnavailableException, AccountNotFoundException {
 
-        try {
-            Balance balance = balanceService.balance(accountId);
-            BalanceRest body = balance.toRest();
-            return ResponseEntity.ok(body);
-        } catch (AccountNotFoundException e) {
-            log.warn(e.getMessage());
-            return ResponseEntity.notFound().build();
-        } catch (BalanceUnavailableException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.internalServerError().build();
-        }
+        Balance balance = balanceService.balance(accountId);
+        BalanceRest body = balance.toRest();
+        return ResponseEntity.ok(body);
+
     }
 
 }
