@@ -5,6 +5,7 @@ import it.corradolombardi.fabanking.fabrikclient.FabrikApiException;
 import it.corradolombardi.fabanking.fabrikclient.FabrikApiStatusCodeException;
 import it.corradolombardi.fabanking.fabrikclient.FabrikClient;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
+import it.corradolombardi.fabanking.model.Balance;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

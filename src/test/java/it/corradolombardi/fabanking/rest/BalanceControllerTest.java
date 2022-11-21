@@ -1,6 +1,6 @@
 package it.corradolombardi.fabanking.rest;
 
-import it.corradolombardi.fabanking.balance.Balance;
+import it.corradolombardi.fabanking.model.Balance;
 import it.corradolombardi.fabanking.balance.BalanceService;
 import it.corradolombardi.fabanking.balance.BalanceUnavailableException;
 import it.corradolombardi.fabanking.model.Amount;

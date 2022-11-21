@@ -1,7 +1,7 @@
 package it.corradolombardi.fabanking.fabrikclient;
 
 import com.google.gson.Gson;
-import it.corradolombardi.fabanking.balance.Balance;
+import it.corradolombardi.fabanking.model.Balance;
 import it.corradolombardi.fabanking.model.Amount;
 import lombok.Data;
 

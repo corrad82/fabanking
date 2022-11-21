@@ -2,6 +2,7 @@ package it.corradolombardi.fabanking.balance;
 
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.Amount;
+import it.corradolombardi.fabanking.model.Balance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
