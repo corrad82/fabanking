@@ -7,8 +7,6 @@ import it.corradolombardi.fabanking.fabrikclient.FabrikClient;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Optional;
-
 @Slf4j
 public class ApiClientBalanceRepository implements BalanceRepository {
 
@@ -19,11 +17,11 @@ public class ApiClientBalanceRepository implements BalanceRepository {
     }
 
     @Override
-    public Optional<Balance> balance(Long accountId) throws AccountNotFoundException, BalanceUnavailableException {
+    public Balance balance(Long accountId) throws AccountNotFoundException, BalanceUnavailableException {
         try {
             BalancecFabrikResponse response = fabrikClient.balance(accountId);
             if (response.isOk()) {
-                return Optional.of(response.getPayload().toBalance());
+                return response.getPayload().toBalance();
             }
             log.warn("Api client returned errors: {}", response.getErrors());
 

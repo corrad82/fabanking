@@ -16,7 +16,6 @@ import org.springframework.web.client.RestClientException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Currency;
-import java.util.Optional;
 
 import static java.nio.charset.Charset.defaultCharset;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,13 +48,13 @@ class ApiClientBalanceRepositoryTest {
                                 new FabrikBalance("2022-11-19", "100.00", "99.00", "USD"))
                 );
 
-        Optional<Balance> balance = apiClientBalanceRepository.balance(accountId);
+        Balance balance = apiClientBalanceRepository.balance(accountId);
 
 
         Balance expectedBalance = new Balance(LocalDate.of(2022, 11, 19),
                 new Amount(9900L, USD),
                 new Amount(10000L, USD));
-        assertEquals(Optional.of(expectedBalance), balance);
+        assertEquals(expectedBalance, balance);
     }
 
     @Test

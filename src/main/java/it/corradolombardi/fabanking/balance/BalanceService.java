@@ -15,8 +15,7 @@ public class BalanceService {
         if (accountId <= 0) {
             throw new AccountNotFoundException(accountId);
         }
-        return balanceRepository.balance(accountId)
-            .orElseThrow(BalanceUnavailableException::new);
+        return balanceRepository.balance(accountId);
     }
 
 }

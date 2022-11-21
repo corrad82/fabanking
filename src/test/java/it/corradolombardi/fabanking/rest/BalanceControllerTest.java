@@ -2,6 +2,7 @@ package it.corradolombardi.fabanking.rest;
 
 import it.corradolombardi.fabanking.balance.Balance;
 import it.corradolombardi.fabanking.balance.BalanceService;
+import it.corradolombardi.fabanking.balance.BalanceUnavailableException;
 import it.corradolombardi.fabanking.model.Amount;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Currency;
-import java.util.Optional;
 
 import static java.time.LocalDate.now;
 import static java.time.format.DateTimeFormatter.ISO_DATE;
@@ -43,10 +43,10 @@ class BalanceControllerTest {
     public void negativeBalanceReturned() throws Exception {
 
         mockMvc.perform(get("/balance/999"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-                .andExpect(jsonPath("$.availableBalance.amount", is("-100.00")))
-                .andExpect(jsonPath("$.balance.amount", is("-200.00")));
+               .andExpect(status().isOk())
+               .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+               .andExpect(jsonPath("$.availableBalance.amount", is("-100.00")))
+               .andExpect(jsonPath("$.balance.amount", is("-200.00")));
     }
 
     @Test
@@ -101,24 +101,20 @@ class BalanceControllerTest {
             return new BalanceService(
                 accountId -> {
                     if (accountId == 333L) {
-                        return Optional.of(
-                            new Balance(
-                                now(),
-                                new Amount(10000L, Currency.getInstance("EUR")),
-                                new Amount(20000L, Currency.getInstance("EUR"))
-                            )
+                        return new Balance(
+                            now(),
+                            new Amount(10000L, Currency.getInstance("EUR")),
+                            new Amount(20000L, Currency.getInstance("EUR"))
                         );
                     }
                     if (accountId == 999L) {
-                        return Optional.of(
-                                new Balance(
-                                        now(),
-                                        new Amount(-10000L, Currency.getInstance("EUR")),
-                                        new Amount(-20000L, Currency.getInstance("EUR"))
-                                )
+                        return new Balance(
+                            now(),
+                            new Amount(-10000L, Currency.getInstance("EUR")),
+                            new Amount(-20000L, Currency.getInstance("EUR"))
                         );
                     }
-                    return Optional.empty();
+                    throw new BalanceUnavailableException();
                 }
             );
         }
