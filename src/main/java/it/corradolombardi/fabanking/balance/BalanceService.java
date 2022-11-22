@@ -11,7 +11,7 @@ public class BalanceService {
         this.balanceRepository = balanceRepository;
     }
 
-    public Balance balance(Long accountId) throws AccountNotFoundException, BalanceUnavailableException {
+    public Balance balance(Long accountId) throws AccountNotFoundException, InformationUnavailableException {
         // we do assume account not existing when input account is less or equal than 0
         if (accountId <= 0) {
             throw new AccountNotFoundException(accountId);

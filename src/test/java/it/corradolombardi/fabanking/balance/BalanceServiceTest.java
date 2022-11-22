@@ -40,7 +40,7 @@ class BalanceServiceTest {
     }
 
     @Test
-    public void positiveBalance() throws BalanceUnavailableException, AccountNotFoundException {
+    public void positiveBalance() throws InformationUnavailableException, AccountNotFoundException {
 
         LocalDate date = LocalDate.now();
         Amount availableBalance = new Amount(abs(random.nextLong()), EUR);
@@ -59,7 +59,7 @@ class BalanceServiceTest {
     }
 
     @Test
-    public void negativeBalance() throws BalanceUnavailableException, AccountNotFoundException {
+    public void negativeBalance() throws InformationUnavailableException, AccountNotFoundException {
         LocalDate date = LocalDate.now();
         Amount availableBalance = new Amount(negate(random.nextLong()), EUR);
         Amount balance = new Amount(negate(random.nextLong()), EUR);
@@ -74,21 +74,21 @@ class BalanceServiceTest {
     }
 
     @Test
-    public void exceptionRethrown() throws AccountNotFoundException, BalanceUnavailableException {
+    public void exceptionRethrown() throws AccountNotFoundException, InformationUnavailableException {
 
-        doThrow(new BalanceUnavailableException()).
+        doThrow(new InformationUnavailableException(accountId)).
             when(balanceRepository)
             .balance(accountId);
 
         try {
             balanceService.balance(accountId);
-        } catch (BalanceUnavailableException e) {
-            assertThat(e.getMessage(), is("Unable to find balance"));
+        } catch (InformationUnavailableException e) {
+            assertThat(e.getMessage(), is("Unable to find information for account id: " + accountId));
         }
     }
 
     @Test
-    public void accountNotFound() throws BalanceUnavailableException {
+    public void accountNotFound() throws InformationUnavailableException {
 
         try {
             balanceService.balance(-10L);

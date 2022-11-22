@@ -1,9 +1,7 @@
 package it.corradolombardi.fabanking.rest;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.corradolombardi.fabanking.balance.BalanceUnavailableException;
+import it.corradolombardi.fabanking.balance.InformationUnavailableException;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -22,8 +20,8 @@ public class ResponseControllerAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.notFound().build();
     }
 
-    @ExceptionHandler({BalanceUnavailableException.class})
-    protected ResponseEntity<String> balanceNotAvailable(BalanceUnavailableException exception) {
+    @ExceptionHandler({InformationUnavailableException.class})
+    protected ResponseEntity<String> balanceNotAvailable(InformationUnavailableException exception) {
         log.error(exception.getMessage(), exception);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("error", exception.getMessage());

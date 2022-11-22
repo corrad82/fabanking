@@ -1,7 +1,7 @@
 * [x] run all tests during build 
 
 * [X] balance (api)
-* [] handler per eccezioni
+* [x] handler per eccezioni
 * [] transactions (api)
 * [] transfer (api ad hoc con client differente)
 

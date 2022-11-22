@@ -2,7 +2,7 @@ package it.corradolombardi.fabanking.rest;
 
 import it.corradolombardi.fabanking.model.Balance;
 import it.corradolombardi.fabanking.balance.BalanceService;
-import it.corradolombardi.fabanking.balance.BalanceUnavailableException;
+import it.corradolombardi.fabanking.balance.InformationUnavailableException;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.BalanceRest;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class BalanceController {
 
     @GetMapping("/balance/{accountId}")
     public ResponseEntity<BalanceRest> balance(@PathVariable("accountId") Long accountId)
-        throws BalanceUnavailableException, AccountNotFoundException {
+        throws InformationUnavailableException, AccountNotFoundException {
 
         Balance balance = balanceService.balance(accountId);
         BalanceRest body = balance.toRest();

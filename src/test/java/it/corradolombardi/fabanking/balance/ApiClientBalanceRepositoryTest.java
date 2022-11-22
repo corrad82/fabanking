@@ -71,7 +71,7 @@ class ApiClientBalanceRepositoryTest {
                                 null)
                 );
 
-        assertThrows(BalanceUnavailableException.class,
+        assertThrows(InformationUnavailableException.class,
                      () -> apiClientBalanceRepository.balance(accountId));
     }
 
@@ -83,7 +83,7 @@ class ApiClientBalanceRepositoryTest {
                 .when(fabrikClient)
                 .balance(accountId);
 
-        assertThrows(BalanceUnavailableException.class,
+        assertThrows(InformationUnavailableException.class,
                      () -> apiClientBalanceRepository.balance(accountId));
     }
 
@@ -128,7 +128,7 @@ class ApiClientBalanceRepositoryTest {
 
         expectPayload(accountId, payload);
 
-        assertThrows(BalanceUnavailableException.class,
+        assertThrows(InformationUnavailableException.class,
                      () -> apiClientBalanceRepository.balance(accountId));
     }
 

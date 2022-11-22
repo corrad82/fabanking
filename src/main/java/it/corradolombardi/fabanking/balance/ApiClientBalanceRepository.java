@@ -18,7 +18,7 @@ public class ApiClientBalanceRepository implements BalanceRepository {
     }
 
     @Override
-    public Balance balance(Long accountId) throws AccountNotFoundException, BalanceUnavailableException {
+    public Balance balance(Long accountId) throws AccountNotFoundException, InformationUnavailableException {
         try {
             BalancecFabrikResponse response = fabrikClient.balance(accountId);
             if (response.isOk()) {
@@ -33,6 +33,6 @@ public class ApiClientBalanceRepository implements BalanceRepository {
         } catch (FabrikApiException e) {
             log.error(e.getMessage(), e);
         }
-        throw new BalanceUnavailableException();
+        throw new InformationUnavailableException(accountId);
     }
 }
