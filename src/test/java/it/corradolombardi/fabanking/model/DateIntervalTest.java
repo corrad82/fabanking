@@ -16,7 +16,7 @@ class DateIntervalTest {
                 LocalDate.of(2020, DECEMBER, 17),
                 LocalDate.of(2021, DECEMBER, 17));
 
-        assertTrue(dateInterval.isValid());
+        assertFalse(dateInterval.invalid());
     }
 
     @Test
@@ -25,7 +25,7 @@ class DateIntervalTest {
                 LocalDate.of(2020, DECEMBER, 17),
                 LocalDate.of(2019, DECEMBER, 17));
 
-        assertFalse(dateInterval.isValid());
+        assertTrue(dateInterval.invalid());
     }
 
     @Test
@@ -34,6 +34,15 @@ class DateIntervalTest {
                 LocalDate.of(2020, DECEMBER, 17),
                 LocalDate.of(2020, DECEMBER, 17));
 
-        assertFalse(dateInterval.isValid());
+        assertTrue(dateInterval.invalid());
+    }
+
+    @Test
+    void dateInFutureAreInvalid() {
+        DateInterval dateInterval = DateInterval.of(
+                LocalDate.now().plusDays(1),
+                LocalDate.now().plusDays(10));
+
+        assertTrue(dateInterval.invalid());
     }
 }

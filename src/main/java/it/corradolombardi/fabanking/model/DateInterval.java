@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 
+import static java.time.LocalDate.now;
 import static lombok.AccessLevel.PRIVATE;
 
 @RequiredArgsConstructor(access = PRIVATE)
@@ -14,7 +15,7 @@ public class DateInterval {
         return new DateInterval(from, to);
     }
 
-    public boolean isValid() {
-        return to.isAfter(from);
+    public boolean invalid() {
+        return from.isAfter(now()) || !to.isAfter(from);
     }
 }
