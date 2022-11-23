@@ -1,7 +1,5 @@
 package it.corradolombardi.fabanking.model;
 
-import lombok.AccessLevel;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -14,5 +12,9 @@ public class DateInterval {
     private final LocalDate to;
     public static DateInterval of(LocalDate from, LocalDate to) {
         return new DateInterval(from, to);
+    }
+
+    public boolean isValid() {
+        return to.isAfter(from);
     }
 }
