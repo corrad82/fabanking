@@ -4,7 +4,6 @@ import it.corradolombardi.fabanking.model.Balance;
 import it.corradolombardi.fabanking.balance.BalanceService;
 import it.corradolombardi.fabanking.balance.InformationUnavailableException;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
-import it.corradolombardi.fabanking.model.BalanceRest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
