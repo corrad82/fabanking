@@ -18,7 +18,9 @@ import static java.lang.Math.negateExact;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -74,27 +76,39 @@ class BalanceServiceTest {
     }
 
     @Test
-    public void exceptionRethrown() throws AccountNotFoundException, InformationUnavailableException {
+    public void informationUnavailableExceptionRethrown() throws AccountNotFoundException, InformationUnavailableException {
 
         doThrow(new InformationUnavailableException(accountId)).
             when(balanceRepository)
             .balance(accountId);
 
-        try {
-            balanceService.balance(accountId);
-        } catch (InformationUnavailableException e) {
-            assertThat(e.getMessage(), is("Unable to find information for account id: " + accountId));
-        }
+        assertThrows(InformationUnavailableException.class,
+                                () -> balanceService.balance(accountId),
+                                "Unable to find information for account id: " + accountId);
+
     }
 
     @Test
-    public void accountNotFound() throws InformationUnavailableException {
+    public void accountNotFoundExceptionRethrown() throws AccountNotFoundException, InformationUnavailableException {
 
-        try {
-            balanceService.balance(-10L);
-        } catch (AccountNotFoundException e) {
-            assertThat(e.getMessage(), is("Account with id -10 has not been found"));
-        }
+        doThrow(new AccountNotFoundException(accountId)).
+            when(balanceRepository)
+            .balance(accountId);
+
+        assertThrows(AccountNotFoundException.class,
+                     () -> balanceService.balance(accountId),
+                     "Unable to find information for account id: " + accountId);
+
+    }
+
+    @Test
+    public void accountNotFound() {
+
+        assertThrows(AccountNotFoundException.class,
+                     () -> balanceService.balance(-10L),
+                     "Account with id -10 has not been found");
+
+        verifyNoInteractions(balanceRepository);
     }
 
     private long negate(long l) {
