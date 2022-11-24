@@ -1,5 +1,8 @@
 package it.corradolombardi.fabanking.fabrikclient;
 
+import java.util.Map;
+
+import it.corradolombardi.fabanking.model.DateInterval;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
@@ -31,6 +34,25 @@ public class FabrikClient {
         } catch (HttpStatusCodeException e) {
             log.error("Error from fabrik API {} - {}", e.getStatusCode(),
                     e.getMessage());
+            throw new FabrikApiStatusCodeException(e);
+        }
+        catch (RestClientException e) {
+            log.error(e.getMessage(), e);
+            throw new FabrikApiException(e);
+        }
+    }
+
+    public TransactionsFabrikResponse transactions(Long accountId, DateInterval dateInterval)
+        throws FabrikApiException {
+        try {
+            Map<String, String> params = Map.of("fromAccountingDate", dateInterval.dateFrom(),
+                                                "toAccountingDate", dateInterval.dateTo());
+            return restTemplate.getForObject(baseUrl + "/" + accountId + "transactions",
+                                             TransactionsFabrikResponse.class,
+                                             params);
+        } catch (HttpStatusCodeException e) {
+            log.error("Error from fabrik API {} - {}", e.getStatusCode(),
+                      e.getMessage());
             throw new FabrikApiStatusCodeException(e);
         }
         catch (RestClientException e) {

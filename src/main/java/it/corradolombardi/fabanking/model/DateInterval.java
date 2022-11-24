@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static java.time.LocalDate.now;
+import static java.time.format.DateTimeFormatter.ISO_DATE;
 import static lombok.AccessLevel.PRIVATE;
 
 @RequiredArgsConstructor(access = PRIVATE)
@@ -19,5 +21,13 @@ public class DateInterval {
 
     public boolean invalid() {
         return from.isAfter(now()) || !to.isAfter(from);
+    }
+
+    public String dateFrom() {
+        return from.format(ISO_DATE);
+    }
+
+    public String dateTo() {
+        return to.format(ISO_DATE);
     }
 }
