@@ -1,26 +1,29 @@
 package it.corradolombardi.fabanking.transactions;
 
 
+import it.corradolombardi.fabanking.balance.InformationUnavailableException;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.DateInterval;
 import it.corradolombardi.fabanking.model.Transaction;
 
-import java.util.Collections;
 import java.util.List;
 
 public class TransactionsService {
 
 
+    private final TransactionsRepository transactionsRepository;
+
+    public TransactionsService(TransactionsRepository transactionsRepository) {
+        this.transactionsRepository = transactionsRepository;
+    }
+
     public List<Transaction> transactions(
-            Long accountId, DateInterval dateInterval) throws AccountNotFoundException {
+        Long accountId, DateInterval dateInterval) throws AccountNotFoundException,
+        InformationUnavailableException {
 
-        try {
-            tryToValidateParameters(accountId, dateInterval);
-        } catch (IllegalArgumentException | AccountNotFoundException e) {
-            throw e;
-        }
+        tryToValidateParameters(accountId, dateInterval);
 
-        return Collections.emptyList();
+        return transactionsRepository.transactions(accountId, dateInterval);
     }
 
     private void tryToValidateParameters(Long accountId, DateInterval dateInterval) throws AccountNotFoundException {

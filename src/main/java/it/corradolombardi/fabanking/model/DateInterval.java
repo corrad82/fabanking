@@ -1,6 +1,7 @@
 package it.corradolombardi.fabanking.model;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -8,6 +9,7 @@ import static java.time.LocalDate.now;
 import static lombok.AccessLevel.PRIVATE;
 
 @RequiredArgsConstructor(access = PRIVATE)
+@ToString
 public class DateInterval {
     private final LocalDate from;
     private final LocalDate to;
