@@ -83,8 +83,7 @@ class BalanceServiceTest {
             .balance(accountId);
 
         assertThrows(InformationUnavailableException.class,
-                                () -> balanceService.balance(accountId),
-                                "Unable to find information for account id: " + accountId);
+                                () -> balanceService.balance(accountId));
 
     }
 
@@ -96,8 +95,7 @@ class BalanceServiceTest {
             .balance(accountId);
 
         assertThrows(AccountNotFoundException.class,
-                     () -> balanceService.balance(accountId),
-                     "Unable to find information for account id: " + accountId);
+                     () -> balanceService.balance(accountId));
 
     }
 
@@ -105,8 +103,7 @@ class BalanceServiceTest {
     public void accountNotFound() {
 
         assertThrows(AccountNotFoundException.class,
-                     () -> balanceService.balance(-10L),
-                     "Account with id -10 has not been found");
+                     () -> balanceService.balance(-10L));
 
         verifyNoInteractions(balanceRepository);
     }
