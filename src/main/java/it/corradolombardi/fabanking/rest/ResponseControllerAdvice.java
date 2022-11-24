@@ -21,7 +21,7 @@ public class ResponseControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({InformationUnavailableException.class})
-    protected ResponseEntity<String> balanceNotAvailable(InformationUnavailableException exception) {
+    protected ResponseEntity<String> informationNotAvailable(InformationUnavailableException exception) {
         log.error(exception.getMessage(), exception);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("error", exception.getMessage());

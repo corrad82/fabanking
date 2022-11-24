@@ -5,6 +5,7 @@
 * [] transactions (api)
 * [] transfer (api ad hoc con client differente)
 
+* [] review mapping path nei rest controller
 
 * [] cache for balance
 * [] cache for transactions
