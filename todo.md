@@ -5,14 +5,14 @@
 * [x] transactions (api)
 * [] transfer (api ad hoc con client differente)
 
-* [] review mapping path nei rest controller
+* [x] review mapping path nei rest controller
 
 * [] cache for balance
 * [] cache for transactions
 * [] database for transactions
 
 * [] extract abstract or interface from api client based repository
-* [] centralizzare utilizzo builder DateInterval
+* [x] centralizzare utilizzo builder DateInterval
 
 * [] github automatic build and readme
 * [] queue or pub/sub (optional)

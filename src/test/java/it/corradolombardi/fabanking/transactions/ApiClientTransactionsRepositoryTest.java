@@ -51,7 +51,7 @@ class ApiClientTransactionsRepositoryTest {
     void clientReturnsData() throws Exception {
 
         Long accountId = 123L;
-        DateInterval dateInterval = dateInterval("2022-11-10", "2022-11-24");
+        DateInterval dateInterval = DateInterval.of("2022-11-10", "2022-11-24");
 
         when(fabrikClient.transactions(accountId, dateInterval))
             .thenReturn(new TransactionsFabrikResponse(
@@ -83,7 +83,7 @@ class ApiClientTransactionsRepositoryTest {
     @Test
     void errorReturnedByClient() throws Exception {
         long accountId = 999L;
-        DateInterval dateInterval = dateInterval("2022-10-31", "2022-11-05");
+        DateInterval dateInterval = DateInterval.of("2022-10-31", "2022-11-05");
 
         when(fabrikClient.transactions(accountId, dateInterval))
             .thenReturn(
@@ -101,7 +101,7 @@ class ApiClientTransactionsRepositoryTest {
     @Test
     void exceptionThrownByClient() throws Exception {
         long accountId = 999123L;
-        DateInterval dateInterval = dateInterval("2022-09-24", "2022-10-16");
+        DateInterval dateInterval = DateInterval.of("2022-09-24", "2022-10-16");
 
         doThrow(new FabrikApiException(new RestClientException("something went wrong")))
             .when(fabrikClient)
@@ -127,7 +127,7 @@ class ApiClientTransactionsRepositoryTest {
             "}";
 
         long accountId = 45235L;
-        DateInterval dateInterval = dateInterval("2022-09-11", "2022-10-10");
+        DateInterval dateInterval = DateInterval.of("2022-09-11", "2022-10-10");
         expectStatusCodeException(accountId, payload, dateInterval);
 
         assertThrows(AccountNotFoundException.class,
@@ -150,7 +150,7 @@ class ApiClientTransactionsRepositoryTest {
 
         long accountId = 45235L;
 
-        DateInterval dateInterval = dateInterval("2022-08-26", "2022-09-24");
+        DateInterval dateInterval = DateInterval.of("2022-08-26", "2022-09-24");
         expectStatusCodeException(accountId, payload, dateInterval);
 
         assertThrows(InformationUnavailableException.class,
@@ -168,11 +168,6 @@ class ApiClientTransactionsRepositoryTest {
         doThrow(new FabrikApiStatusCodeException(e))
             .when(fabrikClient)
             .transactions(accountId, dateInterval);
-    }
-
-    private DateInterval dateInterval(String from, String to) {
-        return DateInterval.of(LocalDate.parse(from),
-                               LocalDate.parse(to));
     }
 
     private Transaction transaction(String transactionId, String operationId, String accountingDate, String valueDate,
