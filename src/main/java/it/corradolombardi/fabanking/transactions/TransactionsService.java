@@ -2,6 +2,7 @@ package it.corradolombardi.fabanking.transactions;
 
 
 import it.corradolombardi.fabanking.balance.InformationUnavailableException;
+import it.corradolombardi.fabanking.fabrikclient.FabrikApiException;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.DateInterval;
 import it.corradolombardi.fabanking.model.Transaction;
@@ -19,7 +20,7 @@ public class TransactionsService {
 
     public List<Transaction> transactions(
         Long accountId, DateInterval dateInterval) throws AccountNotFoundException,
-        InformationUnavailableException {
+        InformationUnavailableException, FabrikApiException {
 
         tryToValidateParameters(accountId, dateInterval);
 

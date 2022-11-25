@@ -7,7 +7,9 @@ import it.corradolombardi.fabanking.rest.TransactionRest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Builder
@@ -35,10 +37,16 @@ public class Transaction {
             .build();
     }
 
-    @Data
+    @ToString
+    @EqualsAndHashCode
     public static  class TransactionType {
         private final String enumeration;
         private final String value;
+
+        public TransactionType(String enumeration, String value) {
+            this.enumeration = enumeration;
+            this.value = value;
+        }
 
         public TransactionRest.TransactionTypeRest toRest() {
             return new TransactionRest.TransactionTypeRest(enumeration, value);

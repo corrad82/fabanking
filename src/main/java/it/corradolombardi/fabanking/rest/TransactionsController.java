@@ -9,6 +9,7 @@ import java.util.Optional;
 
 
 import it.corradolombardi.fabanking.balance.InformationUnavailableException;
+import it.corradolombardi.fabanking.fabrikclient.FabrikApiException;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.DateInterval;
 import it.corradolombardi.fabanking.model.Transaction;
@@ -31,7 +32,7 @@ public class TransactionsController {
     public ResponseEntity<List<TransactionRest>> transactions(@PathVariable("accountId") Long accountId,
                                                               @RequestParam("fromAccountingDate") String dateFrom,
                                                               @RequestParam("toAccountingDate") String dateTo)
-        throws InformationUnavailableException, AccountNotFoundException {
+        throws InformationUnavailableException, AccountNotFoundException, FabrikApiException {
 
 
         List<Transaction> transactions = transactionsService.transactions(

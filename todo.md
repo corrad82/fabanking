@@ -11,6 +11,8 @@
 * [] cache for transactions
 * [] database for transactions
 
+* [] extract abstract or interface from api client based repository
+
 * [] github automatic build and readme
 * [] queue or pub/sub (optional)
 * [] swagger (optional )
