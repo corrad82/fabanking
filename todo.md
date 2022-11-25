@@ -2,7 +2,7 @@
 
 * [X] balance (api)
 * [x] handler per eccezioni
-* [] transactions (api)
+* [x] transactions (api)
 * [] transfer (api ad hoc con client differente)
 
 * [] review mapping path nei rest controller
@@ -12,6 +12,7 @@
 * [] database for transactions
 
 * [] extract abstract or interface from api client based repository
+* [] centralizzare utilizzo builder DateInterval
 
 * [] github automatic build and readme
 * [] queue or pub/sub (optional)

@@ -1,8 +1,7 @@
 package it.corradolombardi.fabanking.fabrikclient;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import it.corradolombardi.fabanking.model.DateInterval;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 public class FabrikClient {
 
     private static final String BALANCE_RESOURCE = "/balance";
-    private static final String TRANSACTIONS_RESOURCE = "transactions";
+    private static final String TRANSACTIONS_RESOURCE = "/transactions";
     private final RestTemplate restTemplate;
 
     private final String baseUrl;
@@ -33,8 +32,7 @@ public class FabrikClient {
     public BalancecFabrikResponse balance(Long accountId) throws FabrikApiException {
 
         return (BalancecFabrikResponse) callFabrik(accountId,
-                                                   Collections.emptyMap(),
-                                                   (acc, map) -> restTemplate.getForObject(
+                                                   acc -> restTemplate.getForObject(
                                                        baseUrl + "/" + accountId + BALANCE_RESOURCE,
                                                        BalancecFabrikResponse.class));
 
@@ -42,22 +40,19 @@ public class FabrikClient {
 
     public TransactionsFabrikResponse transactions(Long accountId, DateInterval dateInterval)
         throws FabrikApiException {
-        Map<String, String> params = Map.of("fromAccountingDate", dateInterval.dateFrom(),
-                                            "toAccountingDate", dateInterval.dateTo());
-        BiFunction<Long, Map<String, String>, BaseFabrikResponse> biFunction =
-            (acc, map) -> restTemplate.getForObject(baseUrl + "/" + acc + TRANSACTIONS_RESOURCE,
-                                                    TransactionsFabrikResponse.class,
-                                                    map);
-        return (TransactionsFabrikResponse) callFabrik(accountId, params, biFunction);
+        Function<Long, BaseFabrikResponse> function =
+            acc -> restTemplate.getForObject(baseUrl + "/" + acc + TRANSACTIONS_RESOURCE +
+                                                        "?fromAccountingDate=" + dateInterval.dateFrom() +
+                                                        "&toAccountingDate=" + dateInterval.dateTo(),
+                                                    TransactionsFabrikResponse.class);
+        return (TransactionsFabrikResponse) callFabrik(accountId, function);
     }
 
     private BaseFabrikResponse callFabrik(Long accountId,
-                                          Map<String, String> params,
-                                          BiFunction<Long, Map<String, String>,
-                                              BaseFabrikResponse> biFunction)
+                                          Function<Long, BaseFabrikResponse> function)
         throws FabrikApiException {
         try {
-            return biFunction.apply(accountId, params);
+            return function.apply(accountId);
         } catch (HttpStatusCodeException e) {
             log.error("Error from fabrik API {} - {}", e.getStatusCode(),
                       e.getMessage());

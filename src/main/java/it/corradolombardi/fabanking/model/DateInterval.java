@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import static java.time.LocalDate.now;
 import static java.time.format.DateTimeFormatter.ISO_DATE;
@@ -17,6 +16,10 @@ public class DateInterval {
     private final LocalDate to;
     public static DateInterval of(LocalDate from, LocalDate to) {
         return new DateInterval(from, to);
+    }
+
+    public static DateInterval of(String from, String to) {
+        return of(LocalDate.parse(from), LocalDate.parse(to));
     }
 
     public boolean invalid() {

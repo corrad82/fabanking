@@ -55,6 +55,7 @@ public class TransactionsController {
         if (StringUtils.isNotBlank(dateTo)) {
             to = LocalDate.parse(dateTo);
         }
+        // we do assume one month period in case one or both dates are missing
         if (Objects.isNull(to)) {
             to = Optional.ofNullable(from).map(ld -> ld.plusMonths(1L))
                          .orElseGet(LocalDate::now);
