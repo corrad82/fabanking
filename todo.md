@@ -18,5 +18,5 @@
 * [] queue or pub/sub (optional)
 * [] swagger (optional )
 
-* [] review assertions nei test 
+* [] review assertions nei test (assertthat -> assertequals)
 * [] code cleanup

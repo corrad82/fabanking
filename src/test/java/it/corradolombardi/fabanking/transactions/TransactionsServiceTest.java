@@ -1,6 +1,6 @@
 package it.corradolombardi.fabanking.transactions;
 
-import it.corradolombardi.fabanking.balance.InformationUnavailableException;
+import it.corradolombardi.fabanking.model.InformationUnavailableException;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.Amount;
 import it.corradolombardi.fabanking.model.DateInterval;

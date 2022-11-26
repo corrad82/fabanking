@@ -3,7 +3,7 @@ package it.corradolombardi.fabanking.transactions;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import it.corradolombardi.fabanking.balance.InformationUnavailableException;
+import it.corradolombardi.fabanking.model.InformationUnavailableException;
 import it.corradolombardi.fabanking.fabrikclient.FabrikApiException;
 import it.corradolombardi.fabanking.fabrikclient.FabrikApiStatusCodeException;
 import it.corradolombardi.fabanking.fabrikclient.FabrikClient;

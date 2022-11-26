@@ -1,6 +1,4 @@
-package it.corradolombardi.fabanking.balance;
-
-import it.corradolombardi.fabanking.model.DateInterval;
+package it.corradolombardi.fabanking.model;
 
 public class InformationUnavailableException extends Exception {
     public InformationUnavailableException(Long accountId) {

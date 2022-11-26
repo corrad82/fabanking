@@ -4,6 +4,7 @@ import it.corradolombardi.fabanking.fabrikclient.*;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.Amount;
 import it.corradolombardi.fabanking.model.Balance;
+import it.corradolombardi.fabanking.model.InformationUnavailableException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

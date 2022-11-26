@@ -2,7 +2,7 @@ package it.corradolombardi.fabanking.rest;
 
 import it.corradolombardi.fabanking.model.Balance;
 import it.corradolombardi.fabanking.balance.BalanceService;
-import it.corradolombardi.fabanking.balance.InformationUnavailableException;
+import it.corradolombardi.fabanking.model.InformationUnavailableException;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
