@@ -1,6 +1,5 @@
 package it.corradolombardi.fabanking.model;
 
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -12,7 +11,7 @@ public class MoneyTransferRequest {
     private final String receiverName;
     private final String description;
     private final Amount amount;
-    private final LocalDate executionDate;
+    private final String executionDate;
 
     public boolean isInvalid() {
         return Stream.of(accountId,

@@ -3,7 +3,9 @@ package it.corradolombardi.fabanking.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import it.corradolombardi.fabanking.rest.MoneyTransferRest;
 import lombok.Data;
 
 @Data
@@ -28,6 +30,29 @@ public class MoneyTransfer {
     private final String feeAccountId;
     private final List<MoneyTransferFee> fees;
     private final boolean hasTaxRelief;
+
+    public MoneyTransferRest toRest() {
+        return new MoneyTransferRest(moneyTransferId,
+                                     status,
+                                     direction.name(),
+                                     creditor.toRest(),
+                                     debtor.toRest(),
+                                     cro,
+                                     uri,
+                                     trn,
+                                     description,
+                                     createdDatetime,
+                                     accountedDatetime,
+                                     debtorValueDate,
+                                     creditorValueDate,
+                                     amounts.toRest(),
+                                     isUrgent,
+                                     isInstant,
+                                     feeType,
+                                     feeAccountId,
+                                     fees.stream().map(MoneyTransferFee::toRest).collect(Collectors.toList()),
+                                     hasTaxRelief);
+    }
 
 
     public enum Direction {

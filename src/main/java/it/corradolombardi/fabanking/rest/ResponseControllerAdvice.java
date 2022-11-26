@@ -3,8 +3,9 @@ package it.corradolombardi.fabanking.rest;
 import java.time.format.DateTimeParseException;
 
 import com.google.gson.JsonObject;
-import it.corradolombardi.fabanking.model.InformationUnavailableException;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
+import it.corradolombardi.fabanking.model.InformationUnavailableException;
+import it.corradolombardi.fabanking.model.MoneyTransferException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +30,18 @@ public class ResponseControllerAdvice extends ResponseEntityExceptionHandler {
                              .body(toResponseBody("requested date cannot be processed"));
     }
 
-    @ExceptionHandler({InformationUnavailableException.class})
-    protected ResponseEntity<String> informationNotAvailable(InformationUnavailableException exception) {
+    @ExceptionHandler({InformationUnavailableException.class, MoneyTransferException.class})
+    protected ResponseEntity<String> informationNotAvailable(Exception exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity.internalServerError().contentType(MediaType.APPLICATION_JSON)
                              .body(toResponseBody(exception.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    protected ResponseEntity<String> illegalArgumen(IllegalArgumentException exception) {
+        log.error(exception.getMessage(), exception);
+        return ResponseEntity.badRequest()
+            .body(toResponseBody(exception.getMessage()));
     }
 
     private static String toResponseBody(String errorMessage) {

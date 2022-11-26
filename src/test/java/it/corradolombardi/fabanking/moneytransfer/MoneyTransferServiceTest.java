@@ -47,7 +47,7 @@ class MoneyTransferServiceTest {
         String receiverName = "John Doe";
         String description = "this is a test transfer";
         Amount amount = new Amount(12000L, EUR);
-        LocalDate executionDate = LocalDate.parse("2022-11-25");
+        String executionDate = "2022-11-25";
 
 
         MoneyTransferRequest request = new MoneyTransferRequest(accountId,
@@ -70,7 +70,7 @@ class MoneyTransferServiceTest {
     void invalidRequest() {
 
         MoneyTransferRequest request = new MoneyTransferRequest(123L, "receiver",
-                                                                null, null, LocalDate.now());
+                                                                null, null, "2022-11-26");
 
         assertThrows(IllegalArgumentException.class, () -> moneyTransferService.transfer(request));
 
@@ -84,7 +84,7 @@ class MoneyTransferServiceTest {
         MoneyTransferRequest request = new MoneyTransferRequest(-123L, "receiver",
                                                                 "description",
                                                                 new Amount(400L, EUR),
-                                                                LocalDate.now());
+                                                                "2022-11-24");
 
         assertThrows(AccountNotFoundException.class, () -> moneyTransferService.transfer(request));
 
@@ -98,7 +98,7 @@ class MoneyTransferServiceTest {
         MoneyTransferRequest request = new MoneyTransferRequest(123L, "receiver",
                                                                 "description",
                                                                 new Amount(400L, EUR),
-                                                                LocalDate.now());
+                                                                "2022-11-26");
 
         doThrow(MoneyTransferException.class)
             .when(moneyTransferRepository).transfer(request);
@@ -109,7 +109,7 @@ class MoneyTransferServiceTest {
     }
 
     private MoneyTransfer moneyTransfer(Long accountId, String receiverName, String description, Amount amount,
-                                        LocalDate executionDate) {
+                                        String executionDate) {
         Person creditor = new Person(receiverName,
                                      new Account("accountcode", "bic"),
                                      new Address("parco della vittoria", "Monopoli", "IT"));
@@ -119,7 +119,8 @@ class MoneyTransferServiceTest {
                                    new Address("parco della vittoria", "Monopoli", "IT"));
 
 
-        TransferAmounts amounts = new TransferAmounts(amount, amount, executionDate, 1.0);
+        LocalDate localExecutionDate = LocalDate.parse(executionDate);
+        TransferAmounts amounts = new TransferAmounts(amount, amount, localExecutionDate, 1.0);
         List<MoneyTransferFee> fees = List.of(
             new MoneyTransferFee("aaa", "fee1", new Amount(25L, EUR)),
             new MoneyTransferFee("bbb", "fee2", new Amount(55L, EUR))
@@ -127,10 +128,11 @@ class MoneyTransferServiceTest {
         return new MoneyTransfer("123", "EXECUTED", Direction.OUTGOING,
                                  creditor, debtor,
                                  "cro", "uri", "trn",
-                                 description, executionDate.atTime(2, 0),
-                                 executionDate.atTime(15, 0),
-                                 executionDate,
-                                 executionDate.plusDays(1L),
+                                 description,
+                                 localExecutionDate.atTime(2, 0),
+                                 localExecutionDate.atTime(15, 0),
+                                 localExecutionDate,
+                                 localExecutionDate.plusDays(1L),
                                  amounts,
                                  false,
                                  false,

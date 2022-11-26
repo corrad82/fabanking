@@ -7,16 +7,22 @@
 
 * [x] review mapping path nei rest controller
 
+* [] lasciare localdate negli oggetti rest 
+* [] spostare le rappresentazioni rest nel model?
+* [] rimuovere random dai test 
+* [] uniformare la composizione delle date nei test
+* [] review assertions nei test (assertthat -> assertequals)
+* [] database for transactions
+* [] extract abstract or interface from api client based repository
+
+* [] code cleanup
+
 * [] cache for balance
 * [] cache for transactions
-* [] database for transactions
 
-* [] extract abstract or interface from api client based repository
 * [x] centralizzare utilizzo builder DateInterval
 
 * [] github automatic build and readme
 * [] queue or pub/sub (optional)
 * [] swagger (optional )
 
-* [] review assertions nei test (assertthat -> assertequals)
-* [] code cleanup

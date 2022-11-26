@@ -1,6 +1,5 @@
 package it.corradolombardi.fabanking.rest;
 
-import it.corradolombardi.fabanking.model.AmountRest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
