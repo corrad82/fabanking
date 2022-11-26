@@ -1,6 +1,5 @@
 package it.corradolombardi.fabanking.fabrikclient;
 
-import java.util.Map;
 import java.util.function.Function;
 
 import it.corradolombardi.fabanking.model.DateInterval;
@@ -15,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
  * each responsible for a service (balance, transactions, transfer, etc.)
  */
 @Slf4j
-public class FabrikClient {
+public class FabrikAccountCashClient {
 
     private static final String BALANCE_RESOURCE = "/balance";
     private static final String TRANSACTIONS_RESOURCE = "/transactions";
@@ -24,7 +23,7 @@ public class FabrikClient {
     private final String baseUrl;
 
 
-    public FabrikClient(String baseUrl, RestTemplate restTemplate) {
+    public FabrikAccountCashClient(String baseUrl, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
         this.restTemplate = restTemplate;
     }

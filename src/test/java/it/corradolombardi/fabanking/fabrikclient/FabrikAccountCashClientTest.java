@@ -23,15 +23,15 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class FabrikClientTest {
+class FabrikAccountCashClientTest {
 
     @Mock
     private RestTemplate restTemplate;
-    private FabrikClient fabrikClient;
+    private FabrikAccountCashClient fabrikAccountCashClient;
 
     @BeforeEach
     void setUp() {
-        fabrikClient = new FabrikClient("https://www.example.com/accounts", restTemplate);
+        fabrikAccountCashClient = new FabrikAccountCashClient("https://www.example.com/accounts", restTemplate);
     }
 
     @Test
@@ -49,7 +49,7 @@ class FabrikClientTest {
                               "    }" +
                               "}", BalancecFabrikResponse::fromJson);
 
-        BalancecFabrikResponse response = fabrikClient.balance(123L);
+        BalancecFabrikResponse response = fabrikAccountCashClient.balance(123L);
 
         assertThat(response,
                    is(
@@ -78,7 +78,7 @@ class FabrikClientTest {
                               "    \"payload\": {}" +
                               "}", BalancecFabrikResponse::fromJson);
 
-        BalancecFabrikResponse response = fabrikClient.balance(789L);
+        BalancecFabrikResponse response = fabrikAccountCashClient.balance(789L);
 
         assertThat(response,
                    is(
@@ -97,7 +97,7 @@ class FabrikClientTest {
         doThrow(new RestClientException("An error occurred"))
             .when(restTemplate)
             .getForObject(anyString(), any());
-        assertThrows(FabrikApiException.class, () -> fabrikClient.balance(4343L));
+        assertThrows(FabrikApiException.class, () -> fabrikAccountCashClient.balance(4343L));
 
     }
 
@@ -142,8 +142,8 @@ class FabrikClientTest {
                               "    }" +
                               "}", TransactionsFabrikResponse::fromJson);
 
-        TransactionsFabrikResponse response = fabrikClient.transactions(123L,
-                                                                        DateInterval.of("2022-11-23", "2022-11-24"));
+        TransactionsFabrikResponse response = fabrikAccountCashClient.transactions(123L,
+                                                                                   DateInterval.of("2022-11-23", "2022-11-24"));
 
         assertThat(response,
                    is(
@@ -186,8 +186,8 @@ class FabrikClientTest {
                               "    \"payload\": {}" +
                               "}", TransactionsFabrikResponse::fromJson);
 
-        TransactionsFabrikResponse response = fabrikClient.transactions(789L,
-                                                                        DateInterval.of("2022-11-10", "2022-11-24"));
+        TransactionsFabrikResponse response = fabrikAccountCashClient.transactions(789L,
+                                                                                   DateInterval.of("2022-11-10", "2022-11-24"));
 
         assertThat(response,
                    is(
@@ -206,8 +206,8 @@ class FabrikClientTest {
         doThrow(new RestClientException("An error occurred"))
             .when(restTemplate)
             .getForObject(anyString(), any());
-        assertThrows(FabrikApiException.class, () -> fabrikClient.transactions(4343L,
-                                                                               DateInterval.of("2022-11-01",
+        assertThrows(FabrikApiException.class, () -> fabrikAccountCashClient.transactions(4343L,
+                                                                                          DateInterval.of("2022-11-01",
                                                                                                "2022-11-10")));
 
     }

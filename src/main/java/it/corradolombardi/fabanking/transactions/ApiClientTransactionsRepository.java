@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import it.corradolombardi.fabanking.model.InformationUnavailableException;
 import it.corradolombardi.fabanking.fabrikclient.FabrikApiException;
 import it.corradolombardi.fabanking.fabrikclient.FabrikApiStatusCodeException;
-import it.corradolombardi.fabanking.fabrikclient.FabrikClient;
+import it.corradolombardi.fabanking.fabrikclient.FabrikAccountCashClient;
 import it.corradolombardi.fabanking.fabrikclient.FabrikTransaction;
 import it.corradolombardi.fabanking.fabrikclient.TransactionsFabrikResponse;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
@@ -18,10 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 public class ApiClientTransactionsRepository
     implements TransactionsRepository {
 
-    private final FabrikClient fabrikClient;
+    private final FabrikAccountCashClient fabrikAccountCashClient;
 
-    public ApiClientTransactionsRepository(FabrikClient fabrikClient) {
-        this.fabrikClient = fabrikClient;
+    public ApiClientTransactionsRepository(FabrikAccountCashClient fabrikAccountCashClient) {
+        this.fabrikAccountCashClient = fabrikAccountCashClient;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ApiClientTransactionsRepository
 
         // FIXME: this block is similar to the one in ApiClientBalanceRepository. Shall we use a common method?
         try {
-            TransactionsFabrikResponse response = fabrikClient.transactions(accountId, dateInterval);
+            TransactionsFabrikResponse response = fabrikAccountCashClient.transactions(accountId, dateInterval);
             if (response.isOk()) {
                 return response.getPayload().getList()
                                .stream().map(FabrikTransaction::toTransaction)

@@ -31,19 +31,19 @@ class ApiClientBalanceRepositoryTest {
 
     public static final Currency USD = Currency.getInstance("USD");
     @Mock
-    private FabrikClient fabrikClient;
+    private FabrikAccountCashClient fabrikAccountCashClient;
     private ApiClientBalanceRepository apiClientBalanceRepository;
 
     @BeforeEach
     void setUp() {
-        apiClientBalanceRepository = new ApiClientBalanceRepository(fabrikClient);
+        apiClientBalanceRepository = new ApiClientBalanceRepository(fabrikAccountCashClient);
     }
 
     @Test
     void valueReturnedByClient() throws Exception {
         long accountId = 1234567L;
 
-        when(fabrikClient.balance(accountId))
+        when(fabrikAccountCashClient.balance(accountId))
             .thenReturn(
                 new BalancecFabrikResponse("OK",
                                            null,
@@ -63,7 +63,7 @@ class ApiClientBalanceRepositoryTest {
     void errorReturnedByClient() throws Exception {
         long accountId = 999L;
 
-        when(fabrikClient.balance(accountId))
+        when(fabrikAccountCashClient.balance(accountId))
             .thenReturn(
                 new BalancecFabrikResponse("KO",
                                            List.of(
@@ -81,7 +81,7 @@ class ApiClientBalanceRepositoryTest {
         long accountId = 999L;
 
         doThrow(new FabrikApiException(new RestClientException("something went wrong")))
-            .when(fabrikClient)
+            .when(fabrikAccountCashClient)
             .balance(accountId);
 
         assertThrows(InformationUnavailableException.class,
@@ -142,7 +142,7 @@ class ApiClientBalanceRepositoryTest {
 
 
         doThrow(new FabrikApiStatusCodeException(e))
-            .when(fabrikClient)
+            .when(fabrikAccountCashClient)
             .balance(accountId);
     }
 }
