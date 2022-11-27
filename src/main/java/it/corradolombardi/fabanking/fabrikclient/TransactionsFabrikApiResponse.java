@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 
 public class TransactionsFabrikApiResponse extends FabrikApiResponse<FabrikTransactionsList> {
 
-    public TransactionsFabrikApiResponse(String status, List errors, FabrikTransactionsList payload) {
+    public TransactionsFabrikApiResponse(String status, List<FabrikError> errors, FabrikTransactionsList payload) {
         super(status, errors, payload);
     }
 

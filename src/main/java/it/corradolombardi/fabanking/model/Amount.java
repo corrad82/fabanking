@@ -19,8 +19,7 @@ public class Amount {
     }
 
     public String amountToString() {
-        double d = (double) cents / 100;
-        String amount = format(US, "%.2f", d);
-        return amount;
+        double amountAsDouble = (double) cents / 100;
+        return format(US, "%.2f", amountAsDouble);
     }
 }
