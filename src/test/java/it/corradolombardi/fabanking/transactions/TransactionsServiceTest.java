@@ -1,26 +1,6 @@
 package it.corradolombardi.fabanking.transactions;
 
-import it.corradolombardi.fabanking.model.InformationUnavailableException;
-import it.corradolombardi.fabanking.model.AccountNotFoundException;
-import it.corradolombardi.fabanking.model.Amount;
-import it.corradolombardi.fabanking.model.DateInterval;
-import it.corradolombardi.fabanking.model.Transaction;
-import it.corradolombardi.fabanking.model.Transaction.TransactionType;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDate;
-import java.util.Currency;
-import java.util.List;
-import java.util.Random;
-
-import static java.lang.Math.abs;
 import static java.time.LocalDate.parse;
-import static java.time.Month.DECEMBER;
-import static java.time.Month.NOVEMBER;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -29,29 +9,43 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
+import java.util.Currency;
+import java.util.List;
+
+import it.corradolombardi.fabanking.model.AccountNotFoundException;
+import it.corradolombardi.fabanking.model.Amount;
+import it.corradolombardi.fabanking.model.DateInterval;
+import it.corradolombardi.fabanking.model.InformationUnavailableException;
+import it.corradolombardi.fabanking.model.Transaction;
+import it.corradolombardi.fabanking.model.Transaction.TransactionType;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 @ExtendWith(MockitoExtension.class)
 class TransactionsServiceTest {
 
 
     private static final Currency EUR = Currency.getInstance("EUR");
-    private final Random random = new Random();
     private TransactionsService transactionsService;
     @Mock
     private TransactionsRepository transactionsRepository;
-    private Long accountId;
 
 
     @BeforeEach
     void setUp() {
         transactionsService = new TransactionsService(transactionsRepository);
-        accountId = abs(random.nextLong());
     }
 
     @Test
     void noTransactionsReturned() throws Exception {
 
-        DateInterval dateInterval = DateInterval.of(LocalDate.of(2021, NOVEMBER, 17),
-                                                    LocalDate.of(2021, DECEMBER, 17));
+        DateInterval dateInterval = DateInterval.of(LocalDate.parse("2021-11-17"),
+                                                    LocalDate.parse("2021-12-17"));
+        Long accountId = 43434L;
         when(transactionsRepository.transactions(accountId, dateInterval))
             .thenReturn(emptyList());
         List<Transaction> transactions = transactionsService.transactions(accountId,
@@ -64,8 +58,8 @@ class TransactionsServiceTest {
     void negativeAccountIdThrowsException() {
 
         Long accountId = -10L;
-        DateInterval dateInterval = DateInterval.of(LocalDate.of(2021, NOVEMBER, 17),
-                                                    LocalDate.of(2021, DECEMBER, 17));
+        DateInterval dateInterval = DateInterval.of(LocalDate.parse("2021-11-17"),
+                                                    LocalDate.parse("2021-12-17"));
 
         assertThrows(AccountNotFoundException.class,
                      () -> transactionsService.transactions(accountId,
@@ -80,6 +74,7 @@ class TransactionsServiceTest {
         DateInterval dateInterval = DateInterval.of(LocalDate.now().plusDays(1),
                                                     LocalDate.now().plusMonths(1));
 
+        Long accountId = 434L;
         assertThrows(IllegalArgumentException.class,
                      () -> transactionsService.transactions(accountId,
                                                             dateInterval));
@@ -89,9 +84,10 @@ class TransactionsServiceTest {
     @Test
     void invalidDatesThrowIllegalArgumentException() {
 
-        DateInterval dateInterval = DateInterval.of(LocalDate.of(2021, DECEMBER, 25),
-                                                    LocalDate.of(2021, DECEMBER, 17));
+        DateInterval dateInterval = DateInterval.of(LocalDate.parse("2021-12-25"),
+                                                    LocalDate.parse("2021-12-17"));
 
+        Long accountId = 5454L;
         assertThrows(IllegalArgumentException.class,
                      () -> transactionsService.transactions(accountId,
                                                             dateInterval));
@@ -101,9 +97,10 @@ class TransactionsServiceTest {
     @Test
     void transactionsReturned() throws Exception {
 
-        DateInterval dateInterval = DateInterval.of(LocalDate.of(2021, NOVEMBER, 17),
-                                                    LocalDate.of(2021, DECEMBER, 17));
+        DateInterval dateInterval = DateInterval.of(LocalDate.parse("2021-11-17"),
+                                                    LocalDate.parse("2021-12-17"));
 
+        Long accountId = 5454234L;
         when(transactionsRepository.transactions(accountId, dateInterval))
             .thenReturn(List.of(
                 transaction("12345",
@@ -146,9 +143,10 @@ class TransactionsServiceTest {
     @Test
     void accountNotFoundExceptionFromRepository() throws Exception {
 
-        DateInterval dateInterval = DateInterval.of(LocalDate.of(2021, NOVEMBER, 17),
-                                                    LocalDate.of(2021, DECEMBER, 17));
+        DateInterval dateInterval = DateInterval.of(LocalDate.parse("2021-11-17"),
+                                                    LocalDate.parse("2021-12-17"));
 
+        Long accountId = 87634L;
         doThrow(new AccountNotFoundException(accountId))
             .when(transactionsRepository)
             .transactions(accountId, dateInterval);
@@ -160,9 +158,10 @@ class TransactionsServiceTest {
     @Test
     void informationUnavailableExceptionFromRepository() throws Exception {
 
-        DateInterval dateInterval = DateInterval.of(LocalDate.of(2021, NOVEMBER, 17),
-                                                    LocalDate.of(2021, DECEMBER, 17));
+        DateInterval dateInterval = DateInterval.of(LocalDate.parse("2021-11-17"),
+                                                    LocalDate.parse("2021-12-17"));
 
+        Long accountId = 56324L;
         doThrow(new InformationUnavailableException(accountId, dateInterval))
             .when(transactionsRepository)
             .transactions(accountId, dateInterval);

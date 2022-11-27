@@ -8,16 +8,16 @@
 * [x] review mapping path nei rest controller
 
 * [x] lasciare localdate negli oggetti rest 
-* [] rimuovere random dai test 
-* [] uniformare la composizione delle date nei test
-* [] review assertions nei test (assertthat -> assertequals)
+* [x] rimuovere random dai test 
+* [x] uniformare la composizione delle date nei test
+* [x] review assertions nei test (assertthat -> assertequals)
 * [] database for transactions
 * [] extract abstract or interface from api client based repository
 
 * [] code cleanup
+* [] check maven dependency -> remove useless
 
-* [] cache for balance
-* [] cache for transactions
+* [] optimize imports
 
 * [x] centralizzare utilizzo builder DateInterval
 

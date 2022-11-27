@@ -34,12 +34,10 @@ class BalanceServiceTest {
 
     private final Random random = new Random();
 
-    private Long accountId;
 
     @BeforeEach
     public void setUp() {
         balanceService = new BalanceService(balanceRepository);
-        accountId = abs(random.nextLong());
     }
 
     @Test
@@ -48,6 +46,8 @@ class BalanceServiceTest {
         LocalDate date = LocalDate.now();
         Amount availableBalance = new Amount(abs(random.nextLong()), EUR);
         Amount balance = new Amount(abs(random.nextLong()), EUR);
+
+        Long accountId = 1234L;
 
         when(balanceRepository.balance(accountId))
             .thenReturn(new Balance(date, availableBalance, balance));
@@ -67,6 +67,7 @@ class BalanceServiceTest {
         Amount availableBalance = new Amount(negate(random.nextLong()), EUR);
         Amount balance = new Amount(negate(random.nextLong()), EUR);
 
+        Long accountId = 333L;
         when(balanceRepository.balance(accountId))
             .thenReturn(new Balance(date, availableBalance, balance));
 
@@ -79,6 +80,7 @@ class BalanceServiceTest {
     @Test
     public void informationUnavailableExceptionRethrown() throws AccountNotFoundException, InformationUnavailableException {
 
+        Long accountId = 234L;
         doThrow(new InformationUnavailableException(accountId)).
             when(balanceRepository)
             .balance(accountId);
@@ -91,6 +93,7 @@ class BalanceServiceTest {
     @Test
     public void accountNotFoundExceptionRethrown() throws AccountNotFoundException, InformationUnavailableException {
 
+        Long accountId = 3333L;
         doThrow(new AccountNotFoundException(accountId)).
             when(balanceRepository)
             .balance(accountId);

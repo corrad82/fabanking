@@ -1,20 +1,19 @@
 package it.corradolombardi.fabanking.model;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 
-import static java.time.Month.DECEMBER;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 class DateIntervalTest {
 
     @Test
     void toAfterFromValidInterval() {
         DateInterval dateInterval = DateInterval.of(
-                LocalDate.of(2020, DECEMBER, 17),
-                LocalDate.of(2021, DECEMBER, 17));
+            LocalDate.parse("2020-12-17"),
+            LocalDate.parse("2021-12-17"));
 
         assertFalse(dateInterval.invalid());
     }
@@ -22,8 +21,8 @@ class DateIntervalTest {
     @Test
     void toBeforeFromInValidInterval() {
         DateInterval dateInterval = DateInterval.of(
-                LocalDate.of(2020, DECEMBER, 17),
-                LocalDate.of(2019, DECEMBER, 17));
+            LocalDate.parse("2020-12-17"),
+            LocalDate.parse("2019-12-17"));
 
         assertTrue(dateInterval.invalid());
     }
@@ -31,8 +30,8 @@ class DateIntervalTest {
     @Test
     void sameDayInvalidInterval() {
         DateInterval dateInterval = DateInterval.of(
-                LocalDate.of(2020, DECEMBER, 17),
-                LocalDate.of(2020, DECEMBER, 17));
+            LocalDate.parse("2020-12-17"),
+            LocalDate.parse("2020-12-17"));
 
         assertTrue(dateInterval.invalid());
     }
@@ -40,8 +39,8 @@ class DateIntervalTest {
     @Test
     void dateInFutureAreInvalid() {
         DateInterval dateInterval = DateInterval.of(
-                LocalDate.now().plusDays(1),
-                LocalDate.now().plusDays(10));
+            LocalDate.now().plusDays(1),
+            LocalDate.now().plusDays(10));
 
         assertTrue(dateInterval.invalid());
     }

@@ -53,7 +53,7 @@ class ApiClientBalanceRepositoryTest {
         Balance balance = apiClientBalanceRepository.balance(accountId);
 
 
-        Balance expectedBalance = new Balance(LocalDate.of(2022, 11, 19),
+        Balance expectedBalance = new Balance(LocalDate.parse("2022-11-19"),
                                               new Amount(9900L, USD),
                                               new Amount(10000L, USD));
         assertEquals(expectedBalance, balance);
