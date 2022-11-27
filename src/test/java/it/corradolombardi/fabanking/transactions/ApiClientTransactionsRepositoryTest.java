@@ -14,11 +14,11 @@ import java.util.List;
 import it.corradolombardi.fabanking.model.InformationUnavailableException;
 import it.corradolombardi.fabanking.fabrikclient.FabrikApiException;
 import it.corradolombardi.fabanking.fabrikclient.FabrikApiStatusCodeException;
-import it.corradolombardi.fabanking.fabrikclient.FabrikAccountCashClient;
+import it.corradolombardi.fabanking.fabrikclient.FabrikClient;
 import it.corradolombardi.fabanking.fabrikclient.FabrikError;
 import it.corradolombardi.fabanking.fabrikclient.FabrikTransaction;
 import it.corradolombardi.fabanking.fabrikclient.FabrikTransactionsList;
-import it.corradolombardi.fabanking.fabrikclient.TransactionsFabrikResponse;
+import it.corradolombardi.fabanking.fabrikclient.TransactionsFabrikApiResponse;
 import it.corradolombardi.fabanking.model.AccountNotFoundException;
 import it.corradolombardi.fabanking.model.Amount;
 import it.corradolombardi.fabanking.model.DateInterval;
@@ -39,12 +39,12 @@ class ApiClientTransactionsRepositoryTest {
 
     private static final Currency EUR = Currency.getInstance("EUR");
     @Mock
-    private FabrikAccountCashClient fabrikAccountCashClient;
+    private FabrikClient fabrikClient;
     private ApiClientTransactionsRepository repository;
 
     @BeforeEach
     void setUp() {
-        repository = new ApiClientTransactionsRepository(fabrikAccountCashClient);
+        repository = new ApiClientTransactionsRepository(fabrikClient);
     }
 
     @Test
@@ -53,8 +53,8 @@ class ApiClientTransactionsRepositoryTest {
         Long accountId = 123L;
         DateInterval dateInterval = DateInterval.of("2022-11-10", "2022-11-24");
 
-        when(fabrikAccountCashClient.transactions(accountId, dateInterval))
-            .thenReturn(new TransactionsFabrikResponse(
+        when(fabrikClient.transactions(accountId, dateInterval))
+            .thenReturn(new TransactionsFabrikApiResponse(
                 "OK",
                 null,
                 new FabrikTransactionsList(
@@ -85,13 +85,13 @@ class ApiClientTransactionsRepositoryTest {
         long accountId = 999L;
         DateInterval dateInterval = DateInterval.of("2022-10-31", "2022-11-05");
 
-        when(fabrikAccountCashClient.transactions(accountId, dateInterval))
+        when(fabrikClient.transactions(accountId, dateInterval))
             .thenReturn(
-                new TransactionsFabrikResponse("KO",
-                                           List.of(
+                new TransactionsFabrikApiResponse("KO",
+                                                  List.of(
                                                new FabrikError("777AE", "An error occurred", "params")
                                            ),
-                                           null)
+                                                  null)
             );
 
         assertThrows(InformationUnavailableException.class,
@@ -104,7 +104,7 @@ class ApiClientTransactionsRepositoryTest {
         DateInterval dateInterval = DateInterval.of("2022-09-24", "2022-10-16");
 
         doThrow(new FabrikApiException(new RestClientException("something went wrong")))
-            .when(fabrikAccountCashClient)
+            .when(fabrikClient)
             .transactions(accountId, dateInterval);
 
         assertThrows(InformationUnavailableException.class,
@@ -166,7 +166,7 @@ class ApiClientTransactionsRepositoryTest {
 
 
         doThrow(new FabrikApiStatusCodeException(e))
-            .when(fabrikAccountCashClient)
+            .when(fabrikClient)
             .transactions(accountId, dateInterval);
     }
 

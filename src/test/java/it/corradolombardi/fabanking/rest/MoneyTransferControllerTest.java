@@ -205,21 +205,36 @@ class MoneyTransferControllerTest {
                         new MoneyTransferFee("feecode", "transfer fee 1",
                                              new Amount(85L, EUR)));
 
-                    return new MoneyTransfer("1234", "EXECUTED", MoneyTransfer.Direction.OUTGOING,
-                                             creditor, debtor, "cro",
-                                             "uri", "trn",
-                                             "wire transfer to john smith",
-                                             LocalDate.parse("2022-11-26").atTime(22, 0),
-                                             LocalDate.parse("2022-11-28").atTime(10, 0),
-                                             LocalDate.parse("2022-11-28"),
-                                             LocalDate.parse("2022-11-29"),
-                                             amounts,
-                                             false,
-                                             false,
-                                             "SHA",
-                                             "1123",
-                                             fees,
-                                             false);
+//                    return new MoneyTransfer("1234", "EXECUTED", MoneyTransfer.Direction.OUTGOING,
+//                                             creditor, debtor, "cro",
+//                                             "uri", "trn",
+//                                             "wire transfer to john smith",
+//                                             LocalDate.parse("2022-11-26").atTime(22, 0),
+//                                             LocalDate.parse("2022-11-28").atTime(10, 0),
+//                                             LocalDate.parse("2022-11-28"),
+//                                             LocalDate.parse("2022-11-29"),
+//                                             amounts,
+//                                             false,
+//                                             false,
+//                                             "SHA",
+//                                             "1123",
+//                                             fees,
+//                                             false);
+
+                    return MoneyTransfer.builder().moneyTransferId("1234")
+                                        .status("EXECUTED")
+                                        .direction(MoneyTransfer.Direction.OUTGOING)
+                                        .creditor(creditor)
+                                        .debtor(debtor)
+                                        .cro("cro").uri("uri").trn("trn")
+                                        .description("wire transfer to john smith")
+                                        .createdDatetime(LocalDate.parse("2022-11-26").atTime(22, 0))
+                                        .accountedDatetime(LocalDate.parse("2022-11-28").atTime(10, 0))
+                                        .debtorValueDate(LocalDate.parse("2022-11-28"))
+                                        .creditorValueDate(LocalDate.parse("2022-11-29"))
+                                        .amounts(amounts)
+                                        .isUrgent(false).isInstant(false).feeType("SHA").feeAccountId("1123")
+                                        .fees(fees).hasTaxRelief(false).build();
                 }
                 if (request.getAccountId() == NOT_FOUND_ACCOUNT_ID) {
                     throw new AccountNotFoundException(NOT_FOUND_ACCOUNT_ID);

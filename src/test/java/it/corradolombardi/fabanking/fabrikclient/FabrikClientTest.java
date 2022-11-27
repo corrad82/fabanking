@@ -23,15 +23,15 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class FabrikAccountCashClientTest {
+class FabrikClientTest {
 
     @Mock
     private RestTemplate restTemplate;
-    private FabrikAccountCashClient fabrikAccountCashClient;
+    private FabrikClient fabrikClient;
 
     @BeforeEach
     void setUp() {
-        fabrikAccountCashClient = new FabrikAccountCashClient("https://www.example.com/accounts", restTemplate);
+        fabrikClient = new FabrikClient("https://www.example.com/accounts", restTemplate);
     }
 
     @Test
@@ -47,13 +47,13 @@ class FabrikAccountCashClientTest {
                               "        \"availableBalance\": 7.07," +
                               "        \"currency\": \"EUR\"" +
                               "    }" +
-                              "}", BalancecFabrikResponse::fromJson);
+                              "}", BalancecFabrikApiResponse::fromJson);
 
-        BalancecFabrikResponse response = fabrikAccountCashClient.balance(123L);
+        BalancecFabrikApiResponse response = fabrikClient.balance(123L);
 
         assertThat(response,
                    is(
-                       new BalancecFabrikResponse(
+                       new BalancecFabrikApiResponse(
                            "OK",
                            null,
                            new FabrikBalance("2022-11-19",
@@ -76,13 +76,13 @@ class FabrikAccountCashClientTest {
                               "        }" +
                               "    ]," +
                               "    \"payload\": {}" +
-                              "}", BalancecFabrikResponse::fromJson);
+                              "}", BalancecFabrikApiResponse::fromJson);
 
-        BalancecFabrikResponse response = fabrikAccountCashClient.balance(789L);
+        BalancecFabrikApiResponse response = fabrikClient.balance(789L);
 
         assertThat(response,
                    is(
-                       new BalancecFabrikResponse(
+                       new BalancecFabrikApiResponse(
                            "KO",
                            Collections.singletonList(
                                new FabrikError("REQ004",
@@ -97,7 +97,7 @@ class FabrikAccountCashClientTest {
         doThrow(new RestClientException("An error occurred"))
             .when(restTemplate)
             .getForObject(anyString(), any());
-        assertThrows(FabrikApiException.class, () -> fabrikAccountCashClient.balance(4343L));
+        assertThrows(FabrikApiException.class, () -> fabrikClient.balance(4343L));
 
     }
 
@@ -140,14 +140,14 @@ class FabrikAccountCashClientTest {
                               "            }" +
                               "            ]" +
                               "    }" +
-                              "}", TransactionsFabrikResponse::fromJson);
+                              "}", TransactionsFabrikApiResponse::fromJson);
 
-        TransactionsFabrikResponse response = fabrikAccountCashClient.transactions(123L,
-                                                                                   DateInterval.of("2022-11-23", "2022-11-24"));
+        TransactionsFabrikApiResponse response = fabrikClient.transactions(123L,
+                                                                           DateInterval.of("2022-11-23", "2022-11-24"));
 
         assertThat(response,
                    is(
-                       new TransactionsFabrikResponse(
+                       new TransactionsFabrikApiResponse(
                            "OK",
                            null,
                            new FabrikTransactionsList(
@@ -184,14 +184,14 @@ class FabrikAccountCashClientTest {
                               "        }" +
                               "    ]," +
                               "    \"payload\": {}" +
-                              "}", TransactionsFabrikResponse::fromJson);
+                              "}", TransactionsFabrikApiResponse::fromJson);
 
-        TransactionsFabrikResponse response = fabrikAccountCashClient.transactions(789L,
-                                                                                   DateInterval.of("2022-11-10", "2022-11-24"));
+        TransactionsFabrikApiResponse response = fabrikClient.transactions(789L,
+                                                                           DateInterval.of("2022-11-10", "2022-11-24"));
 
         assertThat(response,
                    is(
-                       new TransactionsFabrikResponse(
+                       new TransactionsFabrikApiResponse(
                            "KO",
                            Collections.singletonList(
                                new FabrikError("REQ017",
@@ -206,14 +206,16 @@ class FabrikAccountCashClientTest {
         doThrow(new RestClientException("An error occurred"))
             .when(restTemplate)
             .getForObject(anyString(), any());
-        assertThrows(FabrikApiException.class, () -> fabrikAccountCashClient.transactions(4343L,
-                                                                                          DateInterval.of("2022-11-01",
+        assertThrows(FabrikApiException.class, () -> fabrikClient.transactions(4343L,
+                                                                               DateInterval.of("2022-11-01",
                                                                                                "2022-11-10")));
 
     }
 
+    //TODO: missing tests for money transfer, as a real response to be used to simulate interaction is not available so far.
+
     private void expectApiResponse(String request, String jsonResponse,
-                                   Function<String, BaseFabrikResponse> jsonParser) {
+                                   Function<String, FabrikApiResponse> jsonParser) {
         when(restTemplate
                  .getForObject(
                      anyString(),

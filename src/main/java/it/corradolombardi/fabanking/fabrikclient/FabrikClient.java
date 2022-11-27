@@ -14,44 +14,55 @@ import org.springframework.web.client.RestTemplate;
  * each responsible for a service (balance, transactions, transfer, etc.)
  */
 @Slf4j
-public class FabrikAccountCashClient {
+public class FabrikClient {
 
     private static final String BALANCE_RESOURCE = "/balance";
     private static final String TRANSACTIONS_RESOURCE = "/transactions";
+    private static final String MONEY_TRANSFER_RESOURCE = "/payments/money-transfers";
     private final RestTemplate restTemplate;
 
     private final String baseUrl;
 
 
-    public FabrikAccountCashClient(String baseUrl, RestTemplate restTemplate) {
+    public FabrikClient(String baseUrl, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
         this.restTemplate = restTemplate;
     }
 
-    public BalancecFabrikResponse balance(Long accountId) throws FabrikApiException {
+    public BalancecFabrikApiResponse balance(Long accountId) throws FabrikApiException {
 
-        return (BalancecFabrikResponse) callFabrik(accountId,
+        return (BalancecFabrikApiResponse) callFabrik(accountId,
                                                    acc -> restTemplate.getForObject(
                                                        baseUrl + "/" + accountId + BALANCE_RESOURCE,
-                                                       BalancecFabrikResponse.class));
+                                                       BalancecFabrikApiResponse.class));
 
     }
 
-    public TransactionsFabrikResponse transactions(Long accountId, DateInterval dateInterval)
+    public TransactionsFabrikApiResponse transactions(Long accountId, DateInterval dateInterval)
         throws FabrikApiException {
-        Function<Long, BaseFabrikResponse> function =
+        Function<Long, FabrikApiResponse> restCallFunction =
             acc -> restTemplate.getForObject(baseUrl + "/" + acc + TRANSACTIONS_RESOURCE +
                                                         "?fromAccountingDate=" + dateInterval.dateFrom() +
                                                         "&toAccountingDate=" + dateInterval.dateTo(),
-                                                    TransactionsFabrikResponse.class);
-        return (TransactionsFabrikResponse) callFabrik(accountId, function);
+                                                    TransactionsFabrikApiResponse.class);
+        return (TransactionsFabrikApiResponse) callFabrik(accountId, restCallFunction);
     }
 
-    private BaseFabrikResponse callFabrik(Long accountId,
-                                          Function<Long, BaseFabrikResponse> function)
+    public MoneyTransferFabrikApiResponse moneyTransfer(Long accountId, FabrikMoneyTransferRequest request)
+        throws FabrikApiException {
+
+        String url = baseUrl + "/" + accountId + MONEY_TRANSFER_RESOURCE;
+        Function<Long, FabrikApiResponse> fn =
+            acc -> restTemplate.postForObject(url, request, MoneyTransferFabrikApiResponse.class);
+
+        return (MoneyTransferFabrikApiResponse) callFabrik(accountId, fn);
+    }
+
+    private FabrikApiResponse callFabrik(Long accountId,
+                                         Function<Long, FabrikApiResponse> restCallFunction)
         throws FabrikApiException {
         try {
-            return function.apply(accountId);
+            return restCallFunction.apply(accountId);
         } catch (HttpStatusCodeException e) {
             log.error("Error from fabrik API {} - {}", e.getStatusCode(),
                       e.getMessage());

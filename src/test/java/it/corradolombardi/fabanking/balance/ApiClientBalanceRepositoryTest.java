@@ -31,23 +31,23 @@ class ApiClientBalanceRepositoryTest {
 
     public static final Currency USD = Currency.getInstance("USD");
     @Mock
-    private FabrikAccountCashClient fabrikAccountCashClient;
+    private FabrikClient fabrikClient;
     private ApiClientBalanceRepository apiClientBalanceRepository;
 
     @BeforeEach
     void setUp() {
-        apiClientBalanceRepository = new ApiClientBalanceRepository(fabrikAccountCashClient);
+        apiClientBalanceRepository = new ApiClientBalanceRepository(fabrikClient);
     }
 
     @Test
     void valueReturnedByClient() throws Exception {
         long accountId = 1234567L;
 
-        when(fabrikAccountCashClient.balance(accountId))
+        when(fabrikClient.balance(accountId))
             .thenReturn(
-                new BalancecFabrikResponse("OK",
-                                           null,
-                                           new FabrikBalance("2022-11-19", "100.00", "99.00", "USD"))
+                new BalancecFabrikApiResponse("OK",
+                                              null,
+                                              new FabrikBalance("2022-11-19", "100.00", "99.00", "USD"))
             );
 
         Balance balance = apiClientBalanceRepository.balance(accountId);
@@ -63,13 +63,13 @@ class ApiClientBalanceRepositoryTest {
     void errorReturnedByClient() throws Exception {
         long accountId = 999L;
 
-        when(fabrikAccountCashClient.balance(accountId))
+        when(fabrikClient.balance(accountId))
             .thenReturn(
-                new BalancecFabrikResponse("KO",
-                                           List.of(
+                new BalancecFabrikApiResponse("KO",
+                                              List.of(
                                                new FabrikError("777AE", "An error occurred", "params")
                                            ),
-                                           null)
+                                              null)
             );
 
         assertThrows(InformationUnavailableException.class,
@@ -81,7 +81,7 @@ class ApiClientBalanceRepositoryTest {
         long accountId = 999L;
 
         doThrow(new FabrikApiException(new RestClientException("something went wrong")))
-            .when(fabrikAccountCashClient)
+            .when(fabrikClient)
             .balance(accountId);
 
         assertThrows(InformationUnavailableException.class,
@@ -142,7 +142,7 @@ class ApiClientBalanceRepositoryTest {
 
 
         doThrow(new FabrikApiStatusCodeException(e))
-            .when(fabrikAccountCashClient)
+            .when(fabrikClient)
             .balance(accountId);
     }
 }

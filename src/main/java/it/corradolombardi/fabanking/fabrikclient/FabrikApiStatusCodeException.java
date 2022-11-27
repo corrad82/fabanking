@@ -6,12 +6,12 @@ import org.springframework.web.client.HttpStatusCodeException;
 public class FabrikApiStatusCodeException extends FabrikApiException {
 
     private final HttpStatus statusCode;
-    private final NoPayloadFabrikResponse fabrikResponse;
+    private final NoPayloadFabrikApiResponse fabrikResponse;
 
     public FabrikApiStatusCodeException(HttpStatusCodeException httpStatusCodeException) {
         super(httpStatusCodeException);
         statusCode = httpStatusCodeException.getStatusCode();
-        fabrikResponse = NoPayloadFabrikResponse.fromJson(
+        fabrikResponse = NoPayloadFabrikApiResponse.fromJson(
             httpStatusCodeException.getResponseBodyAsString()
         );
     }

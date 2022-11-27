@@ -1,6 +1,7 @@
 package it.corradolombardi.fabanking;
 
 import it.corradolombardi.fabanking.rest.BalanceController;
+import it.corradolombardi.fabanking.rest.MoneyTransferController;
 import it.corradolombardi.fabanking.rest.TransactionsController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,14 @@ class FabankingApplicationTests {
     private BalanceController balanceController;
     @Autowired
     private TransactionsController transactionsController;
+    @Autowired
+    private MoneyTransferController moneyTransferController;
 
     @Test
     public void contextLoaded() {
         assertThat(balanceController, is(notNullValue()));
         assertThat(transactionsController, is(notNullValue()));
+        assertThat(moneyTransferController, is(notNullValue()));
     }
 
 }

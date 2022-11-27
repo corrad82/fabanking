@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import it.corradolombardi.fabanking.rest.MoneyTransferRest;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class MoneyTransfer {
     private final String moneyTransferId;
     private final String status;

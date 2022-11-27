@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public abstract class BaseFabrikResponse<T> {
+public abstract class FabrikApiResponse<T> {
     private final String status;
     private final List<FabrikError> errors;
     private final T payload;

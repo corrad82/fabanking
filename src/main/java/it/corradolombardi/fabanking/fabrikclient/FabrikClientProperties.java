@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "fabrik.client.banking-account-cash")
 @Getter
 @Setter
-public class FabrikBankingAccountProperties {
+public class FabrikClientProperties {
 
     private String baseUrl;
     private String authSchema;

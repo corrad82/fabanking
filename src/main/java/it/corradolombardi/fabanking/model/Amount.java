@@ -14,8 +14,13 @@ public class Amount {
     private final Currency currency;
 
     public AmountRest toRest() {
+        String amount = amountToString();
+        return new AmountRest(amount, currency.getCurrencyCode());
+    }
+
+    public String amountToString() {
         double d = (double) cents / 100;
         String amount = format(US, "%.2f", d);
-        return new AmountRest(amount, currency.getCurrencyCode());
+        return amount;
     }
 }

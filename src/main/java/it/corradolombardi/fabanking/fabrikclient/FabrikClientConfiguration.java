@@ -9,8 +9,8 @@ import org.springframework.web.client.RestTemplate;
 public class FabrikClientConfiguration {
 
     @Bean
-    public FabrikAccountCashClient fabrikClient(FabrikBankingAccountProperties properties,
-                                                RestTemplateBuilder restTemplateBuilder) {
+    public FabrikClient fabrikClient(FabrikClientProperties properties,
+                                     RestTemplateBuilder restTemplateBuilder) {
 
         RestTemplate restTemplate = restTemplateBuilder.build();
         restTemplate.getInterceptors()
@@ -22,6 +22,6 @@ public class FabrikClientConfiguration {
 
                     return execution.execute(request, body);
                 });
-        return new FabrikAccountCashClient(properties.getBaseUrl(), restTemplate);
+        return new FabrikClient(properties.getBaseUrl(), restTemplate);
     }
 }

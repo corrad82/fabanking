@@ -125,20 +125,21 @@ class MoneyTransferServiceTest {
             new MoneyTransferFee("aaa", "fee1", new Amount(25L, EUR)),
             new MoneyTransferFee("bbb", "fee2", new Amount(55L, EUR))
         );
-        return new MoneyTransfer("123", "EXECUTED", Direction.OUTGOING,
-                                 creditor, debtor,
-                                 "cro", "uri", "trn",
-                                 description,
-                                 localExecutionDate.atTime(2, 0),
-                                 localExecutionDate.atTime(15, 0),
-                                 localExecutionDate,
-                                 localExecutionDate.plusDays(1L),
-                                 amounts,
-                                 false,
-                                 false,
-                                 "SHA",
-                                 "12345678",
-                                 fees,
-                                 false);
+
+
+        return MoneyTransfer.builder().moneyTransferId("123")
+                            .status("EXECUTED")
+                            .direction(Direction.OUTGOING)
+                            .creditor(creditor)
+                            .debtor(debtor)
+                            .cro("cro").uri("uri").trn("trn")
+                            .description(description)
+                            .createdDatetime(localExecutionDate.atTime(2, 0))
+                            .accountedDatetime(localExecutionDate.atTime(15, 0))
+                            .debtorValueDate(localExecutionDate)
+                            .creditorValueDate(localExecutionDate.plusDays(1L))
+                            .amounts(amounts)
+                            .isUrgent(false).isInstant(false).feeType("SHA").feeAccountId("12345678")
+                            .fees(fees).hasTaxRelief(false).build();
     }
 }
