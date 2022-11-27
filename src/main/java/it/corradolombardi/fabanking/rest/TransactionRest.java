@@ -1,5 +1,7 @@
 package it.corradolombardi.fabanking.rest;
 
+import java.time.LocalDate;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -12,8 +14,8 @@ public class TransactionRest {
 
     private final String transactionId;
     private final String operationId;
-    private final String accountingDate;
-    private final String valueDate;
+    private final LocalDate accountingDate;
+    private final LocalDate valueDate;
     private final TransactionTypeRest type;
     private final AmountRest amount;
     private final String description;

@@ -1,11 +1,9 @@
 package it.corradolombardi.fabanking.model;
 
-import it.corradolombardi.fabanking.rest.BalanceRest;
-import lombok.Data;
-
 import java.time.LocalDate;
 
-import static java.time.format.DateTimeFormatter.ISO_DATE;
+import it.corradolombardi.fabanking.rest.BalanceRest;
+import lombok.Data;
 
 @Data
 public class Balance {
@@ -15,7 +13,7 @@ public class Balance {
     private final Amount balance;
 
     public BalanceRest toRest() {
-        return new BalanceRest(date.format(ISO_DATE),
+        return new BalanceRest(date,
                                availableBalance.toRest(),
                                balance.toRest());
     }

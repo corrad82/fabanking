@@ -3,12 +3,11 @@
 * [X] balance (api)
 * [x] handler per eccezioni
 * [x] transactions (api)
-* [] transfer (api ad hoc con client differente)
+* [x] transfer (api ad hoc con client differente)
 
 * [x] review mapping path nei rest controller
 
-* [] lasciare localdate negli oggetti rest 
-* [] spostare le rappresentazioni rest nel model?
+* [x] lasciare localdate negli oggetti rest 
 * [] rimuovere random dai test 
 * [] uniformare la composizione delle date nei test
 * [] review assertions nei test (assertthat -> assertequals)

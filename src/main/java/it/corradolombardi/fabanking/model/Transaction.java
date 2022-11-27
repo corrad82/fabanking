@@ -1,7 +1,6 @@
 package it.corradolombardi.fabanking.model;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import it.corradolombardi.fabanking.rest.TransactionRest;
 import lombok.AccessLevel;
@@ -29,8 +28,8 @@ public class Transaction {
             .builder()
             .transactionId(transactionId)
             .operationId(operationId)
-            .accountingDate(accountingDate.format(DateTimeFormatter.ISO_DATE))
-            .valueDate(valueDate.format(DateTimeFormatter.ISO_DATE))
+            .accountingDate(accountingDate)
+            .valueDate(valueDate)
             .type(transactionType.toRest())
             .amount(amount.toRest())
             .description(description)
