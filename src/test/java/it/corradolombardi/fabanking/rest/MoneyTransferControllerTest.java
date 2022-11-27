@@ -55,7 +55,7 @@ class MoneyTransferControllerTest {
         Long accountId = VALID_ACCOUNT_ID;
         String receiverName = "john smith";
         String description = "wire transfer to john smith";
-        Amount amount = new Amount(120000L, EUR);
+        MoneyTransferRequest.Amount amount = new MoneyTransferRequest.Amount(1200.00, "EUR");
         String executionDate = "2022-11-28";
 
         String requestJson = request(accountId, receiverName, description, amount, executionDate);
@@ -173,7 +173,7 @@ class MoneyTransferControllerTest {
     }
 
 
-    private String request(Long accountId, String receiverName, String description, Amount amount,
+    private String request(Long accountId, String receiverName, String description, MoneyTransferRequest.Amount amount,
                            String executionDate) {
         MoneyTransferRequest request = new MoneyTransferRequest(accountId,
                                                                 receiverName,
@@ -204,22 +204,6 @@ class MoneyTransferControllerTest {
                     List<MoneyTransferFee> fees = singletonList(
                         new MoneyTransferFee("feecode", "transfer fee 1",
                                              new Amount(85L, EUR)));
-
-//                    return new MoneyTransfer("1234", "EXECUTED", MoneyTransfer.Direction.OUTGOING,
-//                                             creditor, debtor, "cro",
-//                                             "uri", "trn",
-//                                             "wire transfer to john smith",
-//                                             LocalDate.parse("2022-11-26").atTime(22, 0),
-//                                             LocalDate.parse("2022-11-28").atTime(10, 0),
-//                                             LocalDate.parse("2022-11-28"),
-//                                             LocalDate.parse("2022-11-29"),
-//                                             amounts,
-//                                             false,
-//                                             false,
-//                                             "SHA",
-//                                             "1123",
-//                                             fees,
-//                                             false);
 
                     return MoneyTransfer.builder().moneyTransferId("1234")
                                         .status("EXECUTED")
