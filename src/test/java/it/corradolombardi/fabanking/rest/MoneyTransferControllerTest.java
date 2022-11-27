@@ -82,7 +82,7 @@ class MoneyTransferControllerTest {
         Long accountId = VALID_ACCOUNT_ID;
         String receiverName = "john smith";
         String description = "wire transfer to john smith";
-        Amount amount = new Amount(120000L, EUR);
+        MoneyTransferRequest.Amount amount = new MoneyTransferRequest.Amount(1200.00, "EUR");
         String executionDate = "2022-11-28";
 
         String requestJson = request(accountId, receiverName, description, amount, executionDate);
@@ -120,7 +120,7 @@ class MoneyTransferControllerTest {
         Long accountId = NOT_FOUND_ACCOUNT_ID;
         String receiverName = "john smith";
         String description = "wire transfer to john smith";
-        Amount amount = new Amount(120000L, EUR);
+        MoneyTransferRequest.Amount amount = new MoneyTransferRequest.Amount(1200.00, "EUR");
         String executionDate = "2022-11-28";
 
         String requestJson = request(accountId, receiverName, description, amount, executionDate);
@@ -153,7 +153,7 @@ class MoneyTransferControllerTest {
         Long accountId = 555L;
         String receiverName = "john smith";
         String description = "wire transfer to john smith";
-        Amount amount = new Amount(120000L, EUR);
+        MoneyTransferRequest.Amount amount = new MoneyTransferRequest.Amount(1200.00, "EUR");
         String executionDate = "2022-11-28";
 
         String requestJson = request(accountId, receiverName, description, amount, executionDate);

@@ -49,8 +49,8 @@ public class ApiClientMoneyTransferRepository
             .builder()
             .creditor(fabrikPerson)
             .description(request.getDescription())
-            .currency(request.getAmount().getCurrency().getCurrencyCode())
-            .amount(request.getAmount().amountToString())
+            .currency(request.getAmount().getCurrency())
+            .amount(String.valueOf(request.getAmount().getAmount()))
             .executionDate(request.getExecutionDate())
             .build();
         try {

@@ -67,11 +67,6 @@ class ApiClientMoneyTransferRepositoryTest {
                                                new FabrikAccount("", ""),
                                                new FabrikAddress("", "", ""));
 
-        FabrikMoneyTransferRequest request = FabrikMoneyTransferRequest
-            .builder()
-            .description("Just a brief description")
-            .creditor(creditor)
-            .build();
         when(fabrikClient.moneyTransfer(any(), any()))
             .thenReturn(new MoneyTransferFabrikApiResponse(
                 "OK",
@@ -93,7 +88,8 @@ class ApiClientMoneyTransferRepositoryTest {
         MoneyTransfer moneyTransfer = repository.transfer(new MoneyTransferRequest(
             accountId, "john smith",
             "Just a brief description",
-            new Amount(100L, EUR),
+
+            new MoneyTransferRequest.Amount(100.00, "EUR"),
             "2022-11-28"));
 
 
@@ -121,7 +117,7 @@ class ApiClientMoneyTransferRepositoryTest {
         MoneyTransferRequest moneyTransferRequest = new MoneyTransferRequest(accountId,
                                                                              "smith",
                                                                              "description",
-                                                                             new Amount(100L, EUR),
+                                                                             new MoneyTransferRequest.Amount(100.00, "EUR"),
                                                                              "2022-11-28");
         assertThrows(MoneyTransferException.class,
                      () -> repository.transfer(moneyTransferRequest));
@@ -139,7 +135,7 @@ class ApiClientMoneyTransferRepositoryTest {
         MoneyTransferRequest moneyTransferRequest = new MoneyTransferRequest(accountId,
                                                                              "smith",
                                                                              "description",
-                                                                             new Amount(100L, EUR),
+                                                                             new MoneyTransferRequest.Amount(100.00, "EUR"),
                                                                              "2022-11-28");
         assertThrows(MoneyTransferException.class,
                      () -> repository.transfer(moneyTransferRequest));
@@ -166,7 +162,8 @@ class ApiClientMoneyTransferRepositoryTest {
         MoneyTransferRequest moneyTransferRequest = new MoneyTransferRequest(accountId,
                                                                              "smith",
                                                                              "description",
-                                                                             new Amount(100L, EUR),
+                                                                             new MoneyTransferRequest.Amount(100.00,
+                                                                                                             "EUR"),
                                                                              "2022-11-28");
         assertThrows(AccountNotFoundException.class,
                      () -> repository.transfer(moneyTransferRequest));
@@ -193,7 +190,8 @@ class ApiClientMoneyTransferRepositoryTest {
         MoneyTransferRequest moneyTransferRequest = new MoneyTransferRequest(accountId,
                                                                              "smith",
                                                                              "description",
-                                                                             new Amount(100L, EUR),
+                                                                             new MoneyTransferRequest.Amount(100.00,
+                                                                                                             "EUR"),
                                                                              "2022-11-28");
         assertThrows(MoneyTransferException.class,
                      () -> repository.transfer(moneyTransferRequest));

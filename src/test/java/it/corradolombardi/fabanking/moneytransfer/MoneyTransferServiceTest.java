@@ -46,7 +46,7 @@ class MoneyTransferServiceTest {
         Long accountId = 234L;
         String receiverName = "John Doe";
         String description = "this is a test transfer";
-        Amount amount = new Amount(12000L, EUR);
+        MoneyTransferRequest.Amount amount = new MoneyTransferRequest.Amount(1200.00, "EUR");
         String executionDate = "2022-11-25";
 
 
@@ -57,13 +57,13 @@ class MoneyTransferServiceTest {
                                                                 executionDate);
 
         when(moneyTransferRepository.transfer(request))
-            .thenReturn(moneyTransfer(accountId, receiverName, description, amount, executionDate));
+            .thenReturn(moneyTransfer(accountId, receiverName, description, new Amount(120000L, EUR), executionDate));
 
         MoneyTransfer moneyTransfer = moneyTransferService.transfer(request);
 
         assertEquals(
             moneyTransfer,
-            moneyTransfer(accountId, receiverName, description, amount, executionDate));
+            moneyTransfer(accountId, receiverName, description, new Amount(120000L, EUR), executionDate));
     }
 
     @Test
@@ -83,7 +83,7 @@ class MoneyTransferServiceTest {
 
         MoneyTransferRequest request = new MoneyTransferRequest(-123L, "receiver",
                                                                 "description",
-                                                                new Amount(400L, EUR),
+                                                                new MoneyTransferRequest.Amount(400.00, "EUR"),
                                                                 "2022-11-24");
 
         assertThrows(AccountNotFoundException.class, () -> moneyTransferService.transfer(request));
@@ -97,7 +97,7 @@ class MoneyTransferServiceTest {
 
         MoneyTransferRequest request = new MoneyTransferRequest(123L, "receiver",
                                                                 "description",
-                                                                new Amount(400L, EUR),
+                                                                new MoneyTransferRequest.Amount(400.00, "EUR"),
                                                                 "2022-11-26");
 
         doThrow(MoneyTransferException.class)
@@ -115,7 +115,7 @@ class MoneyTransferServiceTest {
                                      new Address("parco della vittoria", "Monopoli", "IT"));
 
         Person debtor = new Person(receiverName,
-                                   new Account("accountcode", "bic"),
+                                   new Account(accountId.toString(), "bic"),
                                    new Address("parco della vittoria", "Monopoli", "IT"));
 
 
