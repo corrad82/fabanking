@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "fabrik.client.banking-account-cash")
+@ConfigurationProperties(prefix = "fabrik.client")
 @Getter
 @Setter
 public class FabrikClientProperties {
